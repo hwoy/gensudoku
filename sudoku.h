@@ -9,11 +9,8 @@ struct sgs_unit
 	unsigned int idy;
 	unsigned int idz;
 	
-	sgt_set setx;
-	sgt_set sety;
-	sgt_set setz;
-	
-	sgt_set setp;
+	sgt_set value;
+	sgt_set valuep;
 };
 
 struct sgs_board
@@ -29,3 +26,5 @@ struct sgs_game
 };
 
 struct sgs_game *sgf_init(struct sgs_game *game,const char *playername);
+void sgs_setvalue(sgt_set value,struct sgs_game *game,unsigned int x ,unsigned int y);
+sgt_set sgs_getvalue(struct sgs_game *game,unsigned int x,unsigned int y);
