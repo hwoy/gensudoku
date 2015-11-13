@@ -37,5 +37,6 @@ sgt_set sgs_getvalue_y(struct sgs_game *game,unsigned int x);
 sgt_set sgs_getvalue_z(struct sgs_game *game,unsigned int x,unsigned int y);
 sgt_set sgs_getvalue_p(struct sgs_game *game,unsigned int x,unsigned int y);
 
+unsigned int sgs_countvalue_set(sgt_set value);
 unsigned int sgs_countvalue(struct sgs_game *game,unsigned int x,unsigned int y);
 

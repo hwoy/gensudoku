@@ -73,13 +73,19 @@ sgt_set sgs_getvalue_p(struct sgs_game *game,unsigned int x,unsigned int y)
 	return ~(game->board.unit[y][x].valuep=sgs_getvalue_x(game,y)|sgs_getvalue_y(game,x)|sgs_getvalue_z(game,x,y))&(POW2A(S_SQR)-1);
 }
 
-unsigned int sgs_countvalue(struct sgs_game *game,unsigned int x,unsigned int y)
+unsigned int sgs_countvalue_set(sgt_set value)
 {
 	unsigned int i,j;
 	for(i=0,j=0;i<S_SQR;i++)
 	{
-		if(game->board.unit[y][x].value&POW2A(i)) j++;
+		if(value&POW2A(i)) j++;
 	}
 	return j;
+}
+unsigned int sgs_countvalue(struct sgs_game *game,unsigned int x,unsigned int y)
+{
+
+	return sgs_countvalue_set(game->board.unit[y][x].value);
+
 }
 
