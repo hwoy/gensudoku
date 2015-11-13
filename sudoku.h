@@ -31,8 +31,10 @@ struct sgs_game *sgf_init(struct sgs_game *game,const char *playername);
 void sgs_setvalue(sgt_set value,struct sgs_game *game,unsigned int x ,unsigned int y);
 sgt_set sgs_getvalue(struct sgs_game *game,unsigned int x,unsigned int y);
 
-sgt_set sgs_getvalue_px(struct sgs_game *game,unsigned int y);
-sgt_set sgs_getvalue_py(struct sgs_game *game,unsigned int x);
-sgt_set sgs_getvalue_pz(struct sgs_game *game,unsigned int x,unsigned int y);
+sgt_set sgs_getvalue_x(struct sgs_game *game,unsigned int y);
+sgt_set sgs_getvalue_y(struct sgs_game *game,unsigned int x);
+sgt_set sgs_getvalue_z(struct sgs_game *game,unsigned int x,unsigned int y);
 sgt_set sgs_getvalue_p(struct sgs_game *game,unsigned int x,unsigned int y);
+
+unsigned int sgs_countvalue(struct sgs_game *game,unsigned int x,unsigned int y);
 

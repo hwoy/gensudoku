@@ -24,7 +24,7 @@ struct sgs_game *sgf_init(struct sgs_game *game,const char *playername)
 }
 void sgs_setvalue(sgt_set value,struct sgs_game *game,unsigned int x,unsigned int y)
 {
-	game->board.unit[y][x].value|=POW2A(value-1);
+	game->board.unit[y][x].value=value;
 }
 
 sgt_set sgs_getvalue(struct sgs_game *game,unsigned int x,unsigned int y)
@@ -32,29 +32,29 @@ sgt_set sgs_getvalue(struct sgs_game *game,unsigned int x,unsigned int y)
 	return game->board.unit[y][x].value;
 }
 
-sgt_set sgs_getvalue_px(struct sgs_game *game,unsigned int y)
+sgt_set sgs_getvalue_x(struct sgs_game *game,unsigned int y)
 {
 	unsigned int i;
 	sgt_set set;
 	for(set=0,i=0;i<S_SQR;i++)
 	{
-		set|=game->board.unit[y][i].value;
+		set|=(game->board.unit[y][i].value>0)?POW2A(game->board.unit[y][i].value-1):0;
 	}
-	return (~set)&(POW2A(S_SQR)-1);
+	return (set)&(POW2A(S_SQR)-1);
 }
 
-sgt_set sgs_getvalue_py(struct sgs_game *game,unsigned int x)
+sgt_set sgs_getvalue_y(struct sgs_game *game,unsigned int x)
 {
 	unsigned int i;
 	sgt_set set;
 	for(set=0,i=0;i<S_SQR;i++)
 	{
-		set|=game->board.unit[i][x].value;
+		set|=(game->board.unit[i][x].value>0)?POW2A(game->board.unit[i][x].value-1):0;
 	}
-	return (~set)&(POW2A(S_SQR)-1);
+	return (set)&(POW2A(S_SQR)-1);
 }
 
-sgt_set sgs_getvalue_pz(struct sgs_game *game,unsigned int x,unsigned int y)
+sgt_set sgs_getvalue_z(struct sgs_game *game,unsigned int x,unsigned int y)
 {
 	unsigned int i,j;
 	sgt_set set;
@@ -63,14 +63,24 @@ sgt_set sgs_getvalue_pz(struct sgs_game *game,unsigned int x,unsigned int y)
 	{
 		for(j=(x/S_ZSQR)*S_ZSQR;j<S_ZSQR;j++)
 		{
-		set|=game->board.unit[i][j].value;
+		set|=(game->board.unit[i][j].value>0)?POW2A(game->board.unit[i][j].value-1):0;
 		}
 	}
-	return (~set)&(POW2A(S_SQR)-1);
+	return (set)&(POW2A(S_SQR)-1);
 }
 
 sgt_set sgs_getvalue_p(struct sgs_game *game,unsigned int x,unsigned int y)
 {
-	return game->board.unit[y][x].valuep=sgs_getvalue_px(game,y)|sgs_getvalue_py(game,x)|sgs_getvalue_pz(game,x,y);
+	return ~(game->board.unit[y][x].valuep=sgs_getvalue_x(game,y)|sgs_getvalue_y(game,x)|sgs_getvalue_z(game,x,y))&(POW2A(S_SQR)-1);
+}
+
+unsigned int sgs_countvalue(struct sgs_game *game,unsigned int x,unsigned int y)
+{
+	unsigned int i,j;
+	for(i=0,j=0;i<S_SQR;i++)
+	{
+		if(game->board.unit[y][x].value&POW2A(i)) j++;
+	}
+	return j;
 }
 
