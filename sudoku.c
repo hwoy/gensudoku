@@ -1,8 +1,6 @@
-#include <stdlib.h>
-#include <time.h>
 #include "sudoku.h"
 
-struct sgs_game *sgf_init(struct sgs_game *game,const char *playername)
+struct sgs_game *sgf_init(struct sgs_game *game,const char *playername,sgt_gameid gameid,unsigned int numstart)
 {
 	unsigned int x,y;
 	
@@ -18,7 +16,8 @@ struct sgs_game *sgf_init(struct sgs_game *game,const char *playername)
 	}
 	
 	game->playername=playername;
-	srand(game->gameid=time(NULL));
+	game->gameid=gameid;
+	game->numstart=numstart;
 	
 	return game;
 }

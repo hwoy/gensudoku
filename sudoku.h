@@ -23,11 +23,12 @@ struct sgs_board
 struct sgs_game
 {
 	sgt_gameid gameid;
+	unsigned int numstart;
 	struct sgs_board board;
 	const char *playername;
 };
 
-struct sgs_game *sgf_init(struct sgs_game *game,const char *playername);
+struct sgs_game *sgf_init(struct sgs_game *game,const char *playername,sgt_gameid gameid,unsigned int numstart);
 void sgs_setvalue(sgt_set value,struct sgs_game *game,unsigned int x ,unsigned int y);
 sgt_set sgs_getvalue(struct sgs_game *game,unsigned int x,unsigned int y);
 
