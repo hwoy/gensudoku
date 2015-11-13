@@ -29,14 +29,16 @@ struct sgs_game
 };
 
 struct sgs_game *sgf_init(struct sgs_game *game,const char *playername,sgt_gameid gameid,unsigned int numstart);
-void sgs_setvalue(sgt_set value,struct sgs_game *game,unsigned int x ,unsigned int y);
-sgt_set sgs_getvalue(struct sgs_game *game,unsigned int x,unsigned int y);
+void sgf_setvalue(sgt_set value,struct sgs_game *game,unsigned int x ,unsigned int y);
+sgt_set sgf_getvalue(struct sgs_game *game,unsigned int x,unsigned int y);
 
-sgt_set sgs_getvalue_x(struct sgs_game *game,unsigned int y);
-sgt_set sgs_getvalue_y(struct sgs_game *game,unsigned int x);
-sgt_set sgs_getvalue_z(struct sgs_game *game,unsigned int x,unsigned int y);
-sgt_set sgs_getvalue_p(struct sgs_game *game,unsigned int x,unsigned int y);
+sgt_set sgf_getvalue_x(struct sgs_game *game,unsigned int y);
+sgt_set sgf_getvalue_y(struct sgs_game *game,unsigned int x);
+sgt_set sgf_getvalue_z(struct sgs_game *game,unsigned int x,unsigned int y);
+sgt_set sgf_getvalue_p(struct sgs_game *game,unsigned int x,unsigned int y);
 
-unsigned int sgs_countvalue_set(sgt_set value);
-unsigned int sgs_countvalue(struct sgs_game *game,unsigned int x,unsigned int y);
+unsigned int sgf_countvalue_set(sgt_set value);
+unsigned int sgf_countvalue(struct sgs_game *game,unsigned int x,unsigned int y);
+
+void sgf_genboard(struct sgs_game *game);
 

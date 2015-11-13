@@ -14,7 +14,7 @@ for(i=0;i<S_SQR;i++)
 		fprintf(fp,"[");
 		for(k=0;k<S_SQR;k++)
 		{
-			if(sgs_getvalue_p(game,j,i)&POW2A(k)) fprintf(fp,"%u",k+1);
+			if(sgf_getvalue_p(game,j,i)&POW2A(k)) fprintf(fp,"%u",k+1);
 			else fputc(ch,fp);
 		}
 		fprintf(fp,"]");
@@ -31,9 +31,9 @@ for(i=0;i<S_SQR;i++)
 	if(!(i%S_ZSQR) && i) fprintf(fp,"\n");
 	for(j=0;j<S_SQR;j++)
 	{
-		if(!(j%S_ZSQR) && j) fprintf(fp,"  ");
+		if(!(j%S_ZSQR) && j) fprintf(fp,"\t");
 		fprintf(fp,"[");
-			if((k=sgs_getvalue(game,j,i))) fprintf(fp,"%u",k);
+			if((k=sgf_getvalue(game,j,i))) fprintf(fp,"%u",k);
 			else fputc(ch,fp);
 		fprintf(fp,"]");
 	}
