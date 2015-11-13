@@ -3,6 +3,7 @@
 
 #define POW2A(x) (1<<(x))
 
+
 typedef unsigned short sgt_set;
 typedef unsigned int sgt_gameid;
 struct sgs_unit
@@ -40,5 +41,7 @@ sgt_set sgf_getvalue_p(struct sgs_game *game,unsigned int x,unsigned int y);
 unsigned int sgf_countvalue_set(sgt_set value);
 unsigned int sgf_countvalue(struct sgs_game *game,unsigned int x,unsigned int y);
 
+int sgf_random (int min, int max);
+unsigned int sgf_log2a (unsigned int num);
 void sgf_genboard(struct sgs_game *game);
 
