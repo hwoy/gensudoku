@@ -138,7 +138,8 @@ void sgf_genboard(struct sgs_game *game)
 		{
 		for(x=z;x<S_ZSQR+z;x++)
 		{
-			if((x%S_ZSQR)>=(S_ZSQR-1) || (y%S_ZSQR)>=(S_ZSQR-1)) continue;
+			if((x%S_ZSQR)>=(S_ZSQR) || (y%S_ZSQR)>=(S_ZSQR)) continue;
+			/*if((x>=3 && x<=5) && ((y>=3 && y<=5))) continue;*/
 			
 			if(sgf_getvalue(game,x,y)!=0) continue;
 			i=sgf_getvalue_p(game,x,y);
@@ -148,10 +149,9 @@ void sgf_genboard(struct sgs_game *game)
 			{
 				if(i&POW2A(j)) tmp[m++]=j+1;
 			}
-			for(k=0,j=0;j<S_SQR;k++,j++)
-			{
+
 				sgf_setvalue(tmp[sgf_random(0,m-1)],game,x,y);
-			}
+
 			
 			
 		}
@@ -159,13 +159,16 @@ void sgf_genboard(struct sgs_game *game)
 	}
 	
 	
-			
-
-	for(y=0;y<S_SQR;y++)
+/*			
+for(z=0;z<=S_ZSQR*2;z++)
+{
+	for(y=z;y<z+S_ZSQR;y++)
 	{
 		for(x=0;x<S_SQR;x++)
 		{
-			if((x%S_ZSQR)>=(S_ZSQR-1) || (y%S_ZSQR)>=(S_ZSQR-1)) continue;
+			if((x%S_ZSQR)>=(S_ZSQR) || (y%S_ZSQR)>=(S_ZSQR)) continue;
+			if((x>=3 && x<=5) && ((y>=3 && y<=5))) continue;
+*/
 			
 			/*
 				loop:
@@ -180,9 +183,9 @@ void sgf_genboard(struct sgs_game *game)
 							}
 						}
 				}
-			
 			*/
-			
+			/*
+			if(x%S_ZSQR != y%S_ZSQR) continue;
 			if(sgf_getvalue(game,x,y)!=0) continue;
 			i=sgf_getvalue_p(game,x,y);
 			if(!i) continue;
@@ -191,16 +194,14 @@ void sgf_genboard(struct sgs_game *game)
 			{
 				if(i&POW2A(j)) tmp[m++]=j+1;
 			}
-			for(k=0,j=0;j<S_SQR;k++,j++)
-			{
 				sgf_setvalue(tmp[sgf_random(0,m-1)],game,x,y);
-			}
+
 			
 			
 		}
 	}
-
-
+}
+*/
 	
 	
 	

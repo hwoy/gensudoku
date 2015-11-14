@@ -5,6 +5,7 @@
 void printValuep(FILE *fp,struct sgs_game *game,char ch)
 {
 unsigned int i,j,k;
+fprintf(fp,"BOARD ID = %u\n\n",game->gameid);
 for(i=0;i<S_SQR;i++)
 {
 	if(!(i%S_ZSQR) && i) fprintf(fp,"\n");
@@ -27,6 +28,7 @@ for(i=0;i<S_SQR;i++)
 void printBoard(FILE *fp,struct sgs_game *game,char ch)
 {
 unsigned int i,j,k;
+fprintf(fp,"BOARD ID = %u\n\n",game->gameid);
 for(i=0;i<S_SQR;i++)
 {
 	if(!(i%S_ZSQR) && i) fprintf(fp,"\n");
