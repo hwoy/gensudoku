@@ -23,5 +23,8 @@ putchar('\n');
 sgf_genboard(&game);
 printBoard(stdout,&game,CH);
 
+printValuep(stdout,&game,CH);
+putchar('\n');
+
 return 0;
 }

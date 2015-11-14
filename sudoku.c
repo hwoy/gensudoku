@@ -109,19 +109,16 @@ unsigned int sgf_log2a (unsigned int num)
 void sgf_genboard(struct sgs_game *game)
 {
 	unsigned int tmp[S_SQR];
-	unsigned int x,y,i,j,k,m;
+	unsigned int x,y,z,i,j,k,m;
 	unsigned int X,Y;
 	
 	
 	srand(game->gameid);
 	
-	for(y=0;y<S_SQR;y++)
-	{
-		for(x=0;x<S_SQR;x++)
-		{
-			
-			if(sgf_getvalue(game,x,y)!=0) continue;
+
 			/*
+			if(sgf_getvalue(game,x,y)!=0) continue;
+			
 			loop:
 				for(Y=0;Y<S_SQR;Y++)
 				{
@@ -135,8 +132,15 @@ void sgf_genboard(struct sgs_game *game)
 						}
 				}
 	*/
+	for(z=0;z<=S_ZSQR*2;z+=3)
+	{
+		for(y=z;y<S_ZSQR+z;y++)
+		{
+		for(x=z;x<S_ZSQR+z;x++)
+		{
 			if(sgf_getvalue(game,x,y)!=0) continue;
 			i=sgf_getvalue_p(game,x,y);
+			if(!i) continue;
 			
 			for(m=0,j=0;j<S_SQR;j++)
 			{
@@ -150,6 +154,54 @@ void sgf_genboard(struct sgs_game *game)
 			
 		}
 	}
+	}
+	
+	
+			
+
+	for(y=0;y<S_SQR;y++)
+	{
+		for(x=0;x<S_SQR;x++)
+		{
+			if((x%S_ZSQR)>=(S_ZSQR-1) || (y%S_ZSQR)>=(S_ZSQR-1)) continue;
+			
+			/*
+				loop:
+				for(Y=0;Y<S_SQR;Y++)
+				{
+					for(X=0;X<S_SQR;X++)
+						{
+							if((sgf_countvalue_set(sgf_getvalue_p(game,X,Y))==1)&&(sgf_getvalue(game,X,Y)==0))
+							{								
+								sgf_setvalue(sgf_log2a(sgf_getvalue_p(game,X,Y))+1,game,X,Y);
+								goto loop;
+							}
+						}
+				}
+			
+			*/
+			
+			if(sgf_getvalue(game,x,y)!=0) continue;
+			i=sgf_getvalue_p(game,x,y);
+			if(!i) continue;
+			if((sgf_countvalue_set(sgf_getvalue_p(game,X,Y))==2)) continue;
+			
+			for(m=0,j=0;j<S_SQR;j++)
+			{
+				if(i&POW2A(j)) tmp[m++]=j+1;
+			}
+			for(k=0,j=0;j<S_SQR;k++,j++)
+			{
+				sgf_setvalue(tmp[sgf_random(0,m-1)],game,x,y);
+			}
+			
+			
+		}
+	}
+
+
+	
+	
 	
 }
 

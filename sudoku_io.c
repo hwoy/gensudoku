@@ -14,8 +14,9 @@ for(i=0;i<S_SQR;i++)
 		fprintf(fp,"[");
 		for(k=0;k<S_SQR;k++)
 		{
-			if(sgf_getvalue_p(game,j,i)&POW2A(k)) fprintf(fp,"%u",k+1);
-			else fputc(ch,fp);
+			if(sgf_getvalue(game,j,i)) fputc(ch,fp);
+			else if(sgf_getvalue_p(game,j,i)&POW2A(k)) fprintf(fp,"%u",k+1);
+			else fputc(sgf_getvalue_p(game,j,i)?ch:'*',fp);
 		}
 		fprintf(fp,"]");
 	}
