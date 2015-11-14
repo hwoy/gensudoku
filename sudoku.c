@@ -1,9 +1,8 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include "sudoku.h"
 
-struct sgs_game *sgf_init(struct sgs_game *game,const char *playername,sgt_bid bid,unsigned int numstart)
+struct sgs_game *sgf_init(struct sgs_game *game,const char *playername,sgt_bid bid,unsigned int numblank)
 {
 	unsigned int x,y;
 	
@@ -20,7 +19,7 @@ struct sgs_game *sgf_init(struct sgs_game *game,const char *playername,sgt_bid b
 	
 	game->playername=playername;
 	game->bid=bid;
-	game->numstart=numstart;
+	game->numblank=numblank;
 	
 	return game;
 }
@@ -92,6 +91,11 @@ unsigned int sgf_countvalue(struct sgs_game *game,unsigned int x,unsigned int y)
 
 }
 
+void sgf_srandom (int seed)
+{
+  srand (seed);
+}
+
 int sgf_random (int min, int max)
 {
   return min <= max ? min + (rand () % (max - min + 1)) : -1;
@@ -151,27 +155,27 @@ unsigned int sgf_findvalueunique(struct sgs_game *game,unsigned int x,unsigned i
 
 unsigned int sgf_getobstruct(struct sgs_game *game)
 {
-unsigned int i,j;
+unsigned int i,j,k;
 
-for(i=0;i<S_SQR;i++)
+for(k=0,i=0;i<S_SQR;i++)
 {
 	for(j=0;j<S_SQR;j++)
 	{
 
-			if(sgf_getvalue_p(game,j,i)==0 && sgf_getvalue(game,j,i)==0 ) return 1;
+			if(sgf_getvalue_p(game,j,i)==0 && sgf_getvalue(game,j,i)==0 ) k++;
 	}
 }
-return 0;
+return k;
 }
 
-void sgf_genboard(struct sgs_game *game)
+int sgf_genboard(struct sgs_game *game)
 {
 	unsigned int tmp[S_SQR];
 	unsigned int x,y,z,i,j,k,m,n;
 	unsigned int X,Y;
 	
-	
-	srand(game->bid);
+	sgf_resetboard(game);
+	sgf_srandom(game->bid);
 	
 	for(z=0;z<=S_ZSQR*2;z+=3)
 	{
@@ -219,7 +223,6 @@ void sgf_genboard(struct sgs_game *game)
 					tmp[k]=tmp[k+1];
 				}
 				}while(sgf_getobstruct(game) && ((m--)>1));
-				if(!m) sgf_setvalue(0,game,x,y);
 
 
 loop1:	
@@ -264,10 +267,101 @@ loop1:
 				if(i&POW2A(j)) tmp[m++]=j+1;
 				}
 
-				sgf_setvalue(tmp[sgf_random(0,m-1)],game,x,y);
+				do{
+				sgf_setvalue((k=tmp[sgf_random(0,m-1)]),game,x,y);
+				for(;k<m-1;k++)
+				{
+					tmp[k]=tmp[k+1];
+				}
+				}while(sgf_getobstruct(game) && ((m--)>1));
 				
 			}
 		}
 				
-				
+	return sgf_completeboard(game);			
 }
+
+int sgf_completeboard(struct sgs_game *game)
+{
+	unsigned int x,y,j;
+	
+		for(j=0,y=0;y<S_SQR;y++)
+		{
+		for(x=0;x<S_SQR;x++)
+			{
+				if(!sgf_getvalue(game,x,y)) j++;
+			}
+		}
+		
+		return j;
+	
+}
+
+void sgf_resetboard(struct sgs_game *game)
+{
+	unsigned int x,y;
+	
+		for(y=0;y<S_SQR;y++)
+		{
+		for(x=0;x<S_SQR;x++)
+			{
+				sgf_setvalue(0,game,x,y);
+			}
+		}
+		
+	
+}
+
+sgt_bid sgf_findboard(struct sgs_game *game)
+{
+	
+	while(sgf_genboard(game))
+	{
+		sgf_setbid(game,sgf_getbid(game)+1);
+	}
+	
+	return sgf_getbid(game);
+}
+
+void sgf_setbid(struct sgs_game *game,sgt_bid bid)
+{
+	game->bid=bid;
+}
+
+sgt_bid sgf_getbid(struct sgs_game *game)
+{
+	return game->bid;
+}
+
+void sgf_createsudoku(struct sgs_game *game)
+{
+	unsigned int tmp[S_SQR*S_SQR];
+	unsigned int x,y,i,j,k,m;
+		for(y=0;y<S_SQR;y++)
+		{
+		for(x=0;x<S_SQR;x++)
+			{
+				tmp[x+y*S_SQR]=x+y*S_SQR;
+			}
+		}			
+	
+	sgf_findboard(game);
+		for(y=0;y<S_SQR;y++)
+		{
+		for(x=0;x<S_SQR;x++)
+			{
+				game->sboard.unit[y][x].value=game->board.unit[y][x].value;
+			}
+		}
+	
+	for(j=S_SQR*S_SQR,i=0;i<game->numblank;i++)
+	{
+		k=tmp[m=sgf_random(0,--j)];
+		sgf_setvalue(0,game,k%S_SQR,k/S_SQR);
+		for(;m<j;m++)
+		{
+			tmp[m]=tmp[m+1];
+		}
+	}
+}
+
