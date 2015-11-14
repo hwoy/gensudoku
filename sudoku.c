@@ -3,7 +3,7 @@
 #include <time.h>
 #include "sudoku.h"
 
-struct sgs_game *sgf_init(struct sgs_game *game,const char *playername,sgt_gameid gameid,unsigned int numstart)
+struct sgs_game *sgf_init(struct sgs_game *game,const char *playername,sgt_bid bid,unsigned int numstart)
 {
 	unsigned int x,y;
 	
@@ -19,7 +19,7 @@ struct sgs_game *sgf_init(struct sgs_game *game,const char *playername,sgt_gamei
 	}
 	
 	game->playername=playername;
-	game->gameid=gameid;
+	game->bid=bid;
 	game->numstart=numstart;
 	
 	return game;
@@ -171,7 +171,7 @@ void sgf_genboard(struct sgs_game *game)
 	unsigned int X,Y;
 	
 	
-	srand(game->gameid);
+	srand(game->bid);
 	
 	for(z=0;z<=S_ZSQR*2;z+=3)
 	{
@@ -201,7 +201,9 @@ void sgf_genboard(struct sgs_game *game)
 		{
 		for(x=0;x<S_SQR;x++)
 			{
-
+			
+			if(x%S_ZSQR != y%S_ZSQR ) continue;
+			
 				if(sgf_getvalue(game,x,y)!=0) continue;
 				i=sgf_getvalue_p(game,x,y);
 				if(!i) continue;
@@ -210,9 +212,15 @@ void sgf_genboard(struct sgs_game *game)
 				if(i&POW2A(j)) tmp[m++]=j+1;
 				}
 				
+				do{
+				sgf_setvalue((k=tmp[sgf_random(0,m-1)]),game,x,y);
+				for(;k<m-1;k++)
+				{
+					tmp[k]=tmp[k+1];
+				}
+				}while(sgf_getobstruct(game) && ((m--)>1));
+				if(!m) sgf_setvalue(0,game,x,y);
 
-				sgf_setvalue(tmp[sgf_random(0,m-1)],game,x,y);
-				/*if(sgf_getobstruct(game))sgf_setvalue(0,game,x,y);*/
 
 loop1:	
 		for(Y=0;Y<S_SQR;Y++)
@@ -222,7 +230,6 @@ loop1:
 				if((i=sgf_findvalueone(game,X,Y))) 
 				{
 					sgf_setvalue(i,game,X,Y);
-					/*if(sgf_getobstruct(game)){sgf_setvalue(0,game,x,y);break;}*/
 					goto loop1;
 				}
 			}
@@ -234,19 +241,33 @@ loop1:
 				if((i=sgf_findvalueunique(game,X,Y))) 
 				{
 					sgf_setvalue(i,game,X,Y);
-					/*if(sgf_getobstruct(game)){sgf_setvalue(0,game,x,y);break;}*/
 					goto loop1;
 				}
 			}
 		}		
-
-
-
-
+		
+		
 		
 			}
 		}
+		
+		for(y=0;y<S_SQR;y++)
+		{
+		for(x=0;x<S_SQR;x++)
+			{
+			if(sgf_getvalue(game,x,y)!=0) continue;
+			i=sgf_getvalue_p(game,x,y);
+			if(!i) continue;
+			
+			for(m=0,j=0;j<S_SQR;j++)
+				{
+				if(i&POW2A(j)) tmp[m++]=j+1;
+				}
 
+				sgf_setvalue(tmp[sgf_random(0,m-1)],game,x,y);
+				
+			}
+		}
 				
 				
 }

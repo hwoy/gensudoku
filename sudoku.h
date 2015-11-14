@@ -5,7 +5,7 @@
 
 
 typedef unsigned short sgt_set;
-typedef unsigned int sgt_gameid;
+typedef unsigned int sgt_bid;
 struct sgs_unit
 {
 	unsigned int idx;
@@ -23,13 +23,13 @@ struct sgs_board
 
 struct sgs_game
 {
-	sgt_gameid gameid;
+	sgt_bid bid;
 	unsigned int numstart;
 	struct sgs_board board;
 	const char *playername;
 };
 
-struct sgs_game *sgf_init(struct sgs_game *game,const char *playername,sgt_gameid gameid,unsigned int numstart);
+struct sgs_game *sgf_init(struct sgs_game *game,const char *playername,sgt_bid bid,unsigned int numstart);
 void sgf_setvalue(sgt_set value,struct sgs_game *game,unsigned int x ,unsigned int y);
 sgt_set sgf_getvalue(struct sgs_game *game,unsigned int x,unsigned int y);
 

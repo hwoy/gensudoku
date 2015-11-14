@@ -5,7 +5,7 @@
 void printValuep(FILE *fp,struct sgs_game *game,char ch,char sch)
 {
 unsigned int i,j,k;
-fprintf(fp,"BOARD ID = %u\n\n",game->gameid);
+fprintf(fp,"BOARD ID = %u\n\n",game->bid);
 
 for(i=0;i<S_SQR;i++)
 {
@@ -29,7 +29,7 @@ for(i=0;i<S_SQR;i++)
 void printFindvalueUnique(FILE *fp,struct sgs_game *game,char ch)
 {
 unsigned int i,j,k;
-fprintf(fp,"BOARD ID = %u\n\n",game->gameid);
+fprintf(fp,"BOARD ID = %u\n\n",game->bid);
 
 for(i=0;i<S_SQR;i++)
 {
@@ -51,7 +51,7 @@ for(i=0;i<S_SQR;i++)
 void printFindvalueOne(FILE *fp,struct sgs_game *game,char ch)
 {
 unsigned int i,j,k;
-fprintf(fp,"BOARD ID = %u\n\n",game->gameid);
+fprintf(fp,"BOARD ID = %u\n\n",game->bid);
 
 for(i=0;i<S_SQR;i++)
 {
@@ -73,7 +73,7 @@ for(i=0;i<S_SQR;i++)
 void printBoard(FILE *fp,struct sgs_game *game,char ch)
 {
 unsigned int i,j,k;
-fprintf(fp,"BOARD ID = %u\n\n",game->gameid);
+fprintf(fp,"BOARD ID = %u\n\n",game->bid);
 for(i=0;i<S_SQR;i++)
 {
 	if(!(i%S_ZSQR) && i) fprintf(fp,"\n");

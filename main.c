@@ -13,7 +13,7 @@ int main(void)
 unsigned int i;
 struct sgs_game game;
 
-
+/*1447511034*/
 sgf_init(&game,NULL,time(NULL),15);	
 sgf_genboard(&game);
 
