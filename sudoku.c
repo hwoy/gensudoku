@@ -138,6 +138,8 @@ void sgf_genboard(struct sgs_game *game)
 		{
 		for(x=z;x<S_ZSQR+z;x++)
 		{
+			if((x%S_ZSQR)>=(S_ZSQR-1) || (y%S_ZSQR)>=(S_ZSQR-1)) continue;
+			
 			if(sgf_getvalue(game,x,y)!=0) continue;
 			i=sgf_getvalue_p(game,x,y);
 			if(!i) continue;
@@ -184,7 +186,6 @@ void sgf_genboard(struct sgs_game *game)
 			if(sgf_getvalue(game,x,y)!=0) continue;
 			i=sgf_getvalue_p(game,x,y);
 			if(!i) continue;
-			if((sgf_countvalue_set(sgf_getvalue_p(game,X,Y))==2)) continue;
 			
 			for(m=0,j=0;j<S_SQR;j++)
 			{
