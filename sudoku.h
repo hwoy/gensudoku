@@ -43,9 +43,8 @@ unsigned int sgf_countvalue(struct sgs_game *game,unsigned int x,unsigned int y)
 
 int sgf_random (int min, int max);
 unsigned int sgf_log2a (unsigned int num);
-unsigned int sgf_findvaluep(struct sgs_game *game,unsigned int x,unsigned int y);
-unsigned int sgf_isone(struct sgs_game *game);
-unsigned int sgf_isunique(struct sgs_game *game);
+unsigned int sgf_findvalueone(struct sgs_game *game,unsigned int x,unsigned int y);
+unsigned int sgf_findvalueunique(struct sgs_game *game,unsigned int x,unsigned int y);
 unsigned int sgf_getobstruct(struct sgs_game *game);
 void sgf_genboard(struct sgs_game *game);
 

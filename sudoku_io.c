@@ -39,7 +39,7 @@ for(i=0;i<S_SQR;i++)
 		if(!(j%S_ZSQR) && j) fprintf(fp,"\t");
 		fprintf(fp,"[");
 		
-			if((k=sgf_findvaluep(game,j,i)) && (!sgf_getvalue(game,j,i))) fprintf(fp,"%u",k);
+			if((k=sgf_findvalueunique(game,j,i))) fprintf(fp,"%u",k);
 			else fputc(ch,fp);
 
 		fprintf(fp,"]");
@@ -61,7 +61,7 @@ for(i=0;i<S_SQR;i++)
 		if(!(j%S_ZSQR) && j) fprintf(fp,"\t");
 		fprintf(fp,"[");
 		
-			if((sgf_countvalue_set(k=sgf_getvalue_p(game,j,i))==1) && (!sgf_getvalue(game,j,i))) fprintf(fp,"%u",sgf_log2a(k)+1);
+			if((k=sgf_findvalueone(game,j,i))) fprintf(fp,"%u",k);
 			else fputc(ch,fp);
 
 		fprintf(fp,"]");

@@ -104,50 +104,13 @@ unsigned int sgf_log2a (unsigned int num)
 	return i;
 }
 
-unsigned int sgf_findvaluep(struct sgs_game *game,unsigned int x,unsigned int y)
-{
-	unsigned int i,j,m,n;
-	unsigned tmp[S_SQR],tmp2[S_SQR];
-	sgt_set set;
-	
-	set=0;
-	for(i=0;i<S_SQR;i++)
-	{
-		if(i!=x) set|=sgf_getvalue_p(game,i,y);
-	}
-	
-	for(i=0;i<S_SQR;i++)
-	{
-		if(i!=y) set|=sgf_getvalue_p(game,x,i);
-	}
-	
-	for(m=i=(y/S_ZSQR)*S_ZSQR;i<m+S_ZSQR;i++)
-	{
-		for(n=j=(x/S_ZSQR)*S_ZSQR;j<n+S_ZSQR;j++)
-		{
-		if(j!=x || i!=y) set|=sgf_getvalue_p(game,j,i);
-		}
-	}
-	
-	m=sgf_getvalue_p(game,x,y);
-	for(i=0;i<S_SQR;i++)
-	{
-		if((m&POW2A(i)) && !(set&POW2A(i))) return i+1;
-	}
-		
-		return 0;
-}
 
-unsigned int sgf_isone(struct sgs_game *game)
+
+unsigned int sgf_findvalueone(struct sgs_game *game,unsigned int x,unsigned int y)
 {
-	unsigned int x,y;
-	for(y=0;y<S_SQR;y++)
-	{
-		for(x=0;x<S_SQR;x++)
-		{
-			if(sgf_findvaluep(game,x,y) && !sgf_getvalue(game,x,y)) return 1;
-		}
-	}
+unsigned int i;
+if((sgf_countvalue_set(i=sgf_getvalue_p(game,x,y))==1) && !sgf_getvalue(game,x,y)) return sgf_log2a(i)+1;
+
 	return 0;
 }
 
@@ -179,7 +142,7 @@ unsigned int sgf_findvalueunique(struct sgs_game *game,unsigned int x,unsigned i
 	m=sgf_getvalue_p(game,x,y);
 	for(i=0;i<S_SQR;i++)
 	{
-		if((m&POW2A(i)) && !(set&POW2A(i))) return i+1;
+		if((m&POW2A(i)) && !(set&POW2A(i)) && !sgf_getvalue(game,x,y)) return i+1;
 	}
 		
 		return 0;
@@ -215,7 +178,7 @@ void sgf_genboard(struct sgs_game *game)
 		for(y=z;y<S_ZSQR+z;y++)
 		{
 		for(x=z;x<S_ZSQR+z;x++)
-		{
+			{
 			if((x%S_ZSQR)>=(S_ZSQR) || (y%S_ZSQR)>=(S_ZSQR)) continue;
 			
 			if(sgf_getvalue(game,x,y)!=0) continue;
@@ -223,14 +186,67 @@ void sgf_genboard(struct sgs_game *game)
 			if(!i) continue;
 			
 			for(m=0,j=0;j<S_SQR;j++)
-			{
+				{
 				if(i&POW2A(j)) tmp[m++]=j+1;
-			}
+				}
 
 				sgf_setvalue(tmp[sgf_random(0,m-1)],game,x,y);
 			
-		}
-	}
+			}
+		}	
+	}	
 	
-}
+
+		for(y=0;y<S_SQR;y++)
+		{
+		for(x=0;x<S_SQR;x++)
+			{
+
+				if(sgf_getvalue(game,x,y)!=0) continue;
+				i=sgf_getvalue_p(game,x,y);
+				if(!i) continue;
+				for(m=0,j=0;j<S_SQR;j++)
+				{
+				if(i&POW2A(j)) tmp[m++]=j+1;
+				}
+				
+
+				sgf_setvalue(tmp[sgf_random(0,m-1)],game,x,y);
+				/*if(sgf_getobstruct(game))sgf_setvalue(0,game,x,y);*/
+
+loop1:	
+		for(Y=0;Y<S_SQR;Y++)
+		{
+		for(X=0;X<S_SQR;X++)
+			{
+				if((i=sgf_findvalueone(game,X,Y))) 
+				{
+					sgf_setvalue(i,game,X,Y);
+					/*if(sgf_getobstruct(game)){sgf_setvalue(0,game,x,y);break;}*/
+					goto loop1;
+				}
+			}
+		}
+		for(Y=0;Y<S_SQR;Y++)
+		{
+		for(X=0;X<S_SQR;X++)
+			{
+				if((i=sgf_findvalueunique(game,X,Y))) 
+				{
+					sgf_setvalue(i,game,X,Y);
+					/*if(sgf_getobstruct(game)){sgf_setvalue(0,game,x,y);break;}*/
+					goto loop1;
+				}
+			}
+		}		
+
+
+
+
+		
+			}
+		}
+
+				
+				
 }
