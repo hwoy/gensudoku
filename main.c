@@ -7,7 +7,7 @@
 #define CH '_'
 #define SCH '*'
 
-#define NBLANK 40
+#define NBLANK 45
 #define SD 5
 
 
@@ -33,7 +33,7 @@ printFindvalueOne(stdout,&game,CH);
 putchar('\n');
 */
 
-genSudokus_rnd(stdout,&game,0,10,CH,SD);
+genSudokus_rnd(stdout,&game,0,10,CH,SD,time(NULL));
 
 return 0;
 }

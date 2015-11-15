@@ -1,13 +1,12 @@
 #include <stdio.h>
-#include <time.h>
 #include "sudoku.h"
 #include "sudoku_io.h"
 
 void printValuep(FILE *fp,struct sgs_game *game,char ch,char sch)
 {
 unsigned int i,j,k;
-fprintf(fp,"BOARD_ID = %u\n",game->bid);
-fprintf(fp,"N_BLANK = %u\n\n",game->numblank);
+fprintf(fp,"BID = %u, N_BLANK = %u\n\n",game->bid,game->numblank);
+
 
 for(i=0;i<S_SQR;i++)
 {
@@ -31,8 +30,7 @@ for(i=0;i<S_SQR;i++)
 void printFindvalueUnique(FILE *fp,struct sgs_game *game,char ch)
 {
 unsigned int i,j,k;
-fprintf(fp,"BOARD_ID = %u\n",game->bid);
-fprintf(fp,"N_BLANK = %u\n\n",game->numblank);
+fprintf(fp,"BID = %u, N_BLANK = %u\n\n",game->bid,game->numblank);
 
 for(i=0;i<S_SQR;i++)
 {
@@ -54,8 +52,7 @@ for(i=0;i<S_SQR;i++)
 void printFindvalueOne(FILE *fp,struct sgs_game *game,char ch)
 {
 unsigned int i,j,k;
-fprintf(fp,"BOARD_ID = %u\n",game->bid);
-fprintf(fp,"N_BLANK = %u\n\n",game->numblank);
+fprintf(fp,"BID = %u, N_BLANK = %u\n\n",game->bid,game->numblank);
 
 for(i=0;i<S_SQR;i++)
 {
@@ -77,8 +74,7 @@ for(i=0;i<S_SQR;i++)
 void printBoard(FILE *fp,struct sgs_game *game,char ch)
 {
 unsigned int i,j,k;
-fprintf(fp,"BOARD_ID = %u\n",game->bid);
-fprintf(fp,"N_BLANK = %u\n\n",game->numblank);
+fprintf(fp,"BID = %u, N_BLANK = %u\n\n",game->bid,game->numblank);
 
 for(i=0;i<S_SQR;i++)
 {
@@ -124,16 +120,17 @@ putchar('\n');
 
 }
 
-void genSudokus_rnd(FILE *fp,struct sgs_game *game,sgt_bid bid,unsigned int num,char ch,unsigned int sd)
+void genSudokus_rnd(FILE *fp,struct sgs_game *game,sgt_bid bid,unsigned int num,char ch,unsigned int sd,unsigned int seed)
 {
 	unsigned int i,j;
-	sgf_srandom(time(NULL));
+	sgf_srandom(seed);
 	for(i=0;i<num;i++)
 {
 sgf_setbid(game,i+bid);
 j=sgf_getnblank(game);
 sgf_createsudoku_rnd(game,sd);
-printBoard(stdout,game,ch);
+fprintf(fp,"N_BLANK_SEED = %u, S_BID = %u, N = %u, SD = %u\n",seed,bid,num,sd);
+printBoard(fp,game,ch);
 sgf_setnblank(game,j);
 putchar('\n');
 }
