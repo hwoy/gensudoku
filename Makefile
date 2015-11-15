@@ -1,17 +1,18 @@
 CC=gcc
-bin=sudoku
-CFLAGS=-O2 -std=c89 -pedantic -Wall -Werror
+bin=gensudoku
+CFLAGS=-O2 -std=c89 -pedantic #-Wall -Werror
 
 .PHONY: all clean
 
 all: $(bin)
-$(bin): main.o sudoku.o sudoku_io.o
-	$(CC) -o $(bin) main.o sudoku.o sudoku_io.o
+$(bin): main.o sudoku.o sudoku_io.o opt.o function.o
+	$(CC) -o $(bin) main.o sudoku.o sudoku_io.o opt.o function.o
 
 clean:
 	rm -f *.o *.exe $(bin)
-	
-main.o: main.c sudoku.h sudoku_io.h
+function.o: function.c function.h
+main.o: main.c sudoku.h sudoku_io.h function.h opt.h
+opt.o: opt.c opt.h
 sudoku.o: sudoku.c sudoku.h
-sudoku_io.o: sudoku_io.c sudoku_io.h
+sudoku_io.o: sudoku_io.c sudoku.h sudoku_io.h
 
