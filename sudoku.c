@@ -360,3 +360,18 @@ void sgf_createsudoku(struct sgs_game *game)
 	}
 }
 
+void sgf_createsudoku_rnd(struct sgs_game *game,unsigned int sd)
+{
+	sgf_setnblank(game,sgf_random(sgf_getnblank(game)-sd,sgf_getnblank(game)+sd));
+	sgf_createsudoku(game);
+}
+
+void sgf_setnblank(struct sgs_game *game,unsigned int numblank)
+{
+	game->numblank=numblank;
+}
+unsigned int sgf_getnblank(struct sgs_game *game)
+{
+	return game->numblank;
+}
+

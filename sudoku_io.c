@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <time.h>
 #include "sudoku.h"
 #include "sudoku_io.h"
 
@@ -118,6 +119,22 @@ sgf_setbid(game,i+bid);
 sgf_createsudoku(game);
 
 printBoard(stdout,game,ch);
+putchar('\n');
+}
+
+}
+
+void genSudokus_rnd(FILE *fp,struct sgs_game *game,sgt_bid bid,unsigned int num,char ch,unsigned int sd)
+{
+	unsigned int i,j;
+	sgf_srandom(time(NULL));
+	for(i=0;i<num;i++)
+{
+sgf_setbid(game,i+bid);
+j=sgf_getnblank(game);
+sgf_createsudoku_rnd(game,sd);
+printBoard(stdout,game,ch);
+sgf_setnblank(game,j);
 putchar('\n');
 }
 

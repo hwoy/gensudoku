@@ -54,9 +54,12 @@ unsigned int sgf_getobstruct(struct sgs_game *game);
 int sgf_genboard(struct sgs_game *game);
 int sgf_completeboard(struct sgs_game *game);
 void sgf_resetboard(struct sgs_game *game);
-sgt_bid sgf_findboard(struct sgs_game *game);
+sgt_bid sgf_findboard(struct sgs_game *game); /*take sgf_srandom*/
 void sgf_setbid(struct sgs_game *game,sgt_bid bid);
 sgt_bid sgf_getbid(struct sgs_game *game);
 void sgf_createsudoku(struct sgs_game *game);
+void sgf_createsudoku_rnd(struct sgs_game *game,unsigned int sd);/*No sgf_srandom and Modify numblank*/
 
+void sgf_setnblank(struct sgs_game *game,unsigned int numblank);
+unsigned int sgf_getnblank(struct sgs_game *game);
 
