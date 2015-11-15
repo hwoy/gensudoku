@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <time.h>
 #include "sudoku.h"
 
 struct sgs_game *sgf_init(struct sgs_game *game,const char *playername,sgt_bid bid,unsigned int numblank)

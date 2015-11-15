@@ -1,6 +1,37 @@
 #include <stdio.h>
+#include <string.h>
 #include "sudoku.h"
 #include "sudoku_io.h"
+
+
+static void replacech(char *str,char ch,char rp);
+
+
+char sio_getch(char *buff,int size,char dkey)
+{
+		
+	fgets(buff,size,stdin);
+	replacech(buff,13,0);
+	replacech(buff,10,0);
+	if(!strlen(buff))
+	{
+		return dkey;
+	}
+	return buff[0];
+		
+}
+
+static void replacech(char *str,char ch,char rp)
+{
+	int i;
+	for(i=0;str[i];i++)
+	{
+		if(str[i]==ch)
+		{
+			str[i]=rp;
+		}
+	}
+}
 
 void printValuep(FILE *fp,struct sgs_game *game,char ch,char sch)
 {
