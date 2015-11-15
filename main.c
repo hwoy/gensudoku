@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <time.h>
+#include <string.h>
 #include "sudoku.h"
 #include "sudoku_io.h"
 #include "function.h"
@@ -15,28 +16,41 @@
 #define SD 5
 #define NBSEED time(NULL)
 #define FP stdout
+
+#define MAX_NBLANK (S_SQR*S_SQR)
 /***************************************/
 #define BSIZE 1024
 
+
 static void genSudokus_rnd_solve(FILE *fp,struct sgs_game *game,sgt_bid bid,unsigned int num,char ch,unsigned int sd,unsigned int seed);
+static int showErr (const char **str, int errno, const char *msg);
 
 const char playername[]="Hwoy";
 static const char *cptrarr_param[] =
-  { "-sbid:","-nblank:" ,"-nboard:","-sd:" ,"-nbseed:","-solve","-h", NULL };
+  { "-sbid:","-nblank:" ,"-nboard:","-sd:" ,"-nbseed:","-solve","-file:","-h", NULL };
 enum
 {
-  opt_sbid, opt_nblank, opt_nboard, opt_sd, opt_nbseed,opt_solve ,opt_h
+  opt_sbid, opt_nblank, opt_nboard, opt_sd, opt_nbseed,opt_solve ,opt_file,opt_h
 };
 
+static const char *err_str[] =
+  { "Invalid option", "Not an unsigned integer","NBLANK is over a limit","NBLANK and SD are not balance","Can not assigned a file", NULL
+};
+enum
+{
+  err_inv, err_ni,err_nb,err_nsd,err_file
+};
 
 int main(int argc,const char **argv)
 {
   static char carray_buff[BSIZE], filename[BSIZE];
   int i,j;
-  unsigned int ui_cindex,optflag;
+  unsigned int ui_cindex;
   
   unsigned int sbid,nblank,nboard,sd,nbseed;
   FILE *fp;
+  
+  void (*genSudokusptr)(FILE *fp,struct sgs_game *game,sgt_bid bid,unsigned int num,char ch,unsigned int sd,unsigned int seed);
   
 struct sgs_game game;
 
@@ -48,8 +62,10 @@ nboard=NBOARD;
 sd=SD;
 nbseed=NBSEED;
 fp=FP;
+genSudokusptr=genSudokus_rnd;
 /********** init default variables **********/
-optflag=0;
+
+filename[0]=0;
 
   for (ui_cindex = DSTART; (i =opt_action (argc, argv, cptrarr_param, carray_buff,BSIZE, DSTART)) != e_optend; ui_cindex++)
   {
@@ -57,19 +73,57 @@ optflag=0;
 	 
 	 {
 		 case opt_sbid:
+			if (!isUint (carray_buff))
+			return showErr (err_str, err_ni, carray_buff);
+			sbid=s2ui (carray_buff);
 		 break;
 		 
 		 case opt_nblank:
+			if (!isUint (carray_buff))
+			return showErr (err_str, err_ni, carray_buff);
+			nblank=s2ui (carray_buff);
+			
+			if(nblank>MAX_NBLANK)
+			{
+				j=showErr (err_str, err_nb, carray_buff);
+				fprintf(stderr,"NBLANK LIMIT is %u\n",MAX_NBLANK);
+				return j;
+			}
+			
+			if((sd>nblank) || ((nblank+sd)>MAX_NBLANK))
+			{
+				j=showErr (err_str, err_nsd, carray_buff);
+				fprintf(stderr,"NBLANK > SD ans NBLANK+SD <= %u\n",MAX_NBLANK);
+				return j;
+			}
+
 		 break;
 		 
 		 case opt_nboard:
+			if (!isUint (carray_buff))
+			return showErr (err_str, err_ni, carray_buff);
+			nboard=s2ui (carray_buff);
 		 break;
 		 
 		 case opt_sd:
+			if (!isUint (carray_buff))
+			return showErr (err_str, err_ni, carray_buff);
+			sd=s2ui (carray_buff);
+			
+			if((sd>nblank) || ((nblank+sd)>MAX_NBLANK))
+			{
+				j=showErr (err_str, err_nsd, carray_buff);
+				fprintf(stderr,"NBLANK >= SD and NBLANK+SD <= %u\n",MAX_NBLANK);
+				return j;
+			}
 		 break;
 		 
 		 case opt_solve:
-		 optflag|=POW2A(i);
+		 genSudokusptr=genSudokus_rnd_solve;
+		 break;
+		 
+		 case opt_file:
+		strcpy(filename,carray_buff);
 		 break;
 		 
 		 case opt_h:
@@ -80,16 +134,18 @@ optflag=0;
 	 }
   }
 
+  if(filename[0])
+  {
+	  if(!(fp=fopen(filename,"w")))
+	  {
+		 return showErr (err_str, err_file, carray_buff); 
+	  }
+  }
+  
 sgf_init(&game,playername,sbid,nblank);
 
-if(optflag&POW2A(opt_solve))
-{
-	genSudokus_rnd_solve(fp,&game,sbid,nboard,CH,sd,nbseed);
-}
-else
-{
-	genSudokus_rnd(fp,&game,sbid,nboard,CH,sd,nbseed);
-}
+genSudokusptr(fp,&game,sbid,nboard,CH,sd,nbseed);
+
 
 fclose(fp);
 return 0;
@@ -103,4 +159,10 @@ static void genSudokus_rnd_solve(FILE *fp,struct sgs_game *game,sgt_bid bid,unsi
 		genSudokus_rnd(fp,game,bid+i,1,ch,sd,seed);
 		genBoards(fp,game,bid+i,1,ch);
 	}
+}
+
+static int showErr (const char **str, int errno, const char *msg)
+{
+  fprintf (stderr, "ERR %d: %s : %s\n", errno, msg, str[errno]);
+  return -1 * (errno + 1);
 }

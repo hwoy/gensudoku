@@ -134,7 +134,7 @@ sgf_findboard(game);
 
 
 printBoard(stdout,game,ch,0);
-putchar('\n');
+fputc('\n',fp);
 }
 
 }
@@ -148,7 +148,7 @@ sgf_setbid(game,i+bid);
 sgf_createsudoku(game);
 
 printBoard(stdout,game,ch,1);
-putchar('\n');
+fputc('\n',fp);
 }
 
 }
@@ -165,7 +165,7 @@ sgf_createsudoku_rnd(game,sd);
 fprintf(fp,"N_BLANK_SEED = %u, S_BID = %u, N = %u, BN_BLANK = %u, SD = %u\n",seed,bid,num,j,sd);
 printBoard(fp,game,ch,1);
 sgf_setnblank(game,j);
-putchar('\n');
+fputc('\n',fp);
 }
 
 }
