@@ -24,6 +24,8 @@
 
 static void genSudokus_rnd_solve(FILE *fp,struct sgs_game *game,sgt_bid bid,unsigned int num,char ch,unsigned int sd,unsigned int seed);
 static int showErr (const char **str, int errno, const char *msg);
+static void showHelp (const char *str, const char **param,const char **hparam);
+static unsigned int basename (const char *ch);
 
 const char playername[]="Hwoy";
 static const char *cptrarr_param[] =
@@ -32,7 +34,10 @@ enum
 {
   opt_sbid, opt_nblank, opt_nboard, opt_sd, opt_nbseed,opt_solve ,opt_file,opt_h
 };
-
+static const char *helpparam[] =
+  { "start bid", "numbers of blank", "numbers of board", "SD", "nblank seed", "Solve games","Out put file", "Help",
+  NULL
+};
 static const char *err_str[] =
   { "Invalid option", "Not an unsigned integer","NBLANK is over a limit","NBLANK and SD are not balance","Can not assigned a file", NULL
 };
@@ -127,10 +132,12 @@ filename[0]=0;
 		 break;
 		 
 		 case opt_h:
-		 break;
+			showHelp (argv[0], cptrarr_param, helpparam);
+			return 1;
 		 
 		 default:
-		 break;
+	  showHelp (argv[0], cptrarr_param, helpparam);
+	  return showErr (err_str, err_inv, carray_buff);
 	 }
   }
 
@@ -166,3 +173,40 @@ static int showErr (const char **str, int errno, const char *msg)
   fprintf (stderr, "ERR %d: %s : %s\n", errno, msg, str[errno]);
   return -1 * (errno + 1);
 }
+
+static unsigned int basename (const char *ch)
+{
+  unsigned int i, j;
+  for (i = 0, j = 0; ch[i]; i++)
+    {
+      if (ch[i] == '\\' || ch[i] == '/')
+	{
+	  j = i;
+	}
+    }
+  return (j == 0) ? 0 : j + 1;
+}
+
+static void showHelp (const char *str, const char **param, const char **hparam)
+{
+  unsigned int i;
+  fprintf (stderr, "\nUSAGE: %s [option list]\n\n", &str[basename (str)]);
+
+  fprintf (stderr, "[OPTIONS]\n");
+
+  for (i = 0; param[i] && hparam[i]; i++)
+    {
+      fprintf (stderr, "%10s\t\t%s\n", param[i], hparam[i]);
+    }
+  fprintf (stderr, "\n");
+
+  fprintf (stderr, "[DEFAULT]\n");
+  fprintf (stderr, "%10s=%s\n", param[0], "Random");
+  fprintf (stderr, "%10s=%u\n", param[1], NBLANK);
+  fprintf (stderr, "%10s=%u\n", param[2], NBOARD);
+  fprintf (stderr, "%10s=%u\n", param[3], SD);
+  fprintf (stderr, "%10s=%s\n", param[4], "Random");
+  fprintf (stderr, "%10s=%s\n", param[6], "stdout");
+  fprintf (stderr, "\n");
+}
+

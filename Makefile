@@ -1,6 +1,6 @@
 CC=gcc
 bin=gensudoku
-CFLAGS=-O2 -std=c89 -pedantic #-Wall -Werror
+CFLAGS=-O2 -std=c89 -pedantic -Wall -Werror
 
 .PHONY: all clean
 
