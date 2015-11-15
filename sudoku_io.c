@@ -133,7 +133,7 @@ sgf_setbid(game,i+bid);
 sgf_findboard(game);
 
 
-printBoard(stdout,game,ch,0);
+printBoard(fp,game,ch,0);
 fputc('\n',fp);
 }
 
