@@ -6,11 +6,11 @@
 #include "opt.h"
 
 /**************************************/
-#define CH '_'
+#define CH 0x20
 #define SCH '*'
 
 #define SBID time(NULL)
-#define NBLANK 45
+#define NBLANK 40
 #define NBOARD 1
 #define SD 5
 #define NBSEED time(NULL)
