@@ -57,5 +57,6 @@ void sgf_resetboard(struct sgs_game *game);
 sgt_bid sgf_findboard(struct sgs_game *game);
 void sgf_setbid(struct sgs_game *game,sgt_bid bid);
 sgt_bid sgf_getbid(struct sgs_game *game);
+void sgf_createsudoku(struct sgs_game *game);
 
 

@@ -121,7 +121,6 @@ if((sgf_countvalue_set(i=sgf_getvalue_p(game,x,y))==1) && !sgf_getvalue(game,x,y
 unsigned int sgf_findvalueunique(struct sgs_game *game,unsigned int x,unsigned int y)
 {
 	unsigned int i,j,m,n;
-	unsigned tmp[S_SQR],tmp2[S_SQR];
 	sgt_set set;
 	
 	set=0;
@@ -171,11 +170,10 @@ return k;
 int sgf_genboard(struct sgs_game *game)
 {
 	unsigned int tmp[S_SQR];
-	unsigned int x,y,z,i,j,k,m,n;
+	unsigned int x,y,z,i,j,k,m;
 	unsigned int X,Y;
 	
 	sgf_resetboard(game);
-	sgf_srandom(game->bid);
 	
 	for(z=0;z<=S_ZSQR*2;z+=3)
 	{
@@ -314,11 +312,8 @@ void sgf_resetboard(struct sgs_game *game)
 
 sgt_bid sgf_findboard(struct sgs_game *game)
 {
-	
-	while(sgf_genboard(game))
-	{
-		sgf_setbid(game,sgf_getbid(game)+1);
-	}
+	sgf_srandom(game->bid);
+	while(sgf_genboard(game));
 	
 	return sgf_getbid(game);
 }

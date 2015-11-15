@@ -5,7 +5,8 @@
 void printValuep(FILE *fp,struct sgs_game *game,char ch,char sch)
 {
 unsigned int i,j,k;
-fprintf(fp,"BOARD ID = %u\n\n",game->bid);
+fprintf(fp,"BOARD_ID = %u\n",game->bid);
+fprintf(fp,"N_BLANK = %u\n\n",game->numblank);
 
 for(i=0;i<S_SQR;i++)
 {
@@ -29,7 +30,8 @@ for(i=0;i<S_SQR;i++)
 void printFindvalueUnique(FILE *fp,struct sgs_game *game,char ch)
 {
 unsigned int i,j,k;
-fprintf(fp,"BOARD ID = %u\n\n",game->bid);
+fprintf(fp,"BOARD_ID = %u\n",game->bid);
+fprintf(fp,"N_BLANK = %u\n\n",game->numblank);
 
 for(i=0;i<S_SQR;i++)
 {
@@ -51,7 +53,8 @@ for(i=0;i<S_SQR;i++)
 void printFindvalueOne(FILE *fp,struct sgs_game *game,char ch)
 {
 unsigned int i,j,k;
-fprintf(fp,"BOARD ID = %u\n\n",game->bid);
+fprintf(fp,"BOARD_ID = %u\n",game->bid);
+fprintf(fp,"N_BLANK = %u\n\n",game->numblank);
 
 for(i=0;i<S_SQR;i++)
 {
@@ -73,7 +76,9 @@ for(i=0;i<S_SQR;i++)
 void printBoard(FILE *fp,struct sgs_game *game,char ch)
 {
 unsigned int i,j,k;
-fprintf(fp,"BOARD ID = %u\n\n",game->bid);
+fprintf(fp,"BOARD_ID = %u\n",game->bid);
+fprintf(fp,"N_BLANK = %u\n\n",game->numblank);
+
 for(i=0;i<S_SQR;i++)
 {
 	if(!(i%S_ZSQR) && i) fprintf(fp,"\n");
@@ -87,4 +92,33 @@ for(i=0;i<S_SQR;i++)
 	}
 	fputc('\n',fp);
 }
+}
+
+void genBoards(FILE *fp,struct sgs_game *game,sgt_bid bid,unsigned int num,char ch)
+{
+	unsigned int i;
+	for(i=0;i<num;i++)
+{
+sgf_setbid(game,i+bid);
+sgf_findboard(game);
+
+
+printBoard(stdout,game,ch);
+putchar('\n');
+}
+
+}
+
+void genSudokus(FILE *fp,struct sgs_game *game,sgt_bid bid,unsigned int num,char ch)
+{
+	unsigned int i;
+	for(i=0;i<num;i++)
+{
+sgf_setbid(game,i+bid);
+sgf_createsudoku(game);
+
+printBoard(stdout,game,ch);
+putchar('\n');
+}
+
 }
