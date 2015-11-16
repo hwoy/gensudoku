@@ -1,6 +1,6 @@
 CC=gcc
 bin=gensudoku
-CFLAGS=-O2 -std=c89 -pedantic -Wall -Werror -Wno-array-bounds
+CFLAGS=-O2 -std=c89 -pedantic -Wall -Werror -Wno-array-bounds -D_DEVRAND_
 
 .PHONY: all clean
 

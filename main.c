@@ -6,21 +6,31 @@
 #include "function.h"
 #include "opt.h"
 
-/**************************************/
+/****************** Constances ********************/
 #define CH 0x20
 #define SCH '*'
 
-#define SBID time(NULL)
 #define NBLANK 40
 #define NBOARD 1
 #define SD 5
-#define NBSEED time(NULL)
 #define FP stdout
 
 #define MAX_NBLANK (S_SQR*S_SQR)
-/***************************************/
+
 #define BSIZE 1024
 
+#ifdef _DEVRAND_
+static unsigned int devrandom(const char *devname);
+static const char devname[]="/dev/urandom";
+#define SBID devrandom(devname)
+#define NBSEED devrandom(devname)
+#else
+	
+#define SBID time(NULL)
+#define NBSEED time(NULL)	
+
+#endif
+/****************** Constances ********************/
 
 static void genSudokus_rnd_solve(FILE *fp,struct sgs_game *game,sgt_bid bid,unsigned int num,char ch,unsigned int sd,unsigned int seed);
 static int showErr (const char **str, int errno, const char *msg);
@@ -210,3 +220,18 @@ static void showHelp (const char *str, const char **param, const char **hparam)
   fprintf (stderr, "\n");
 }
 
+#ifdef _DEVRAND_
+static unsigned int devrandom(const char *devname)
+{
+	unsigned int i,j,k;
+	FILE *fp;
+	
+	if(!(fp=fopen(devname,"rb"))) return 0;
+	
+	for(k=0,i=0;i<sizeof(j);i+=sizeof(char),k++)
+		((char *)(&j))[k]=fgetc(fp);
+	
+	fclose(fp);
+	return j;
+}
+#endif
