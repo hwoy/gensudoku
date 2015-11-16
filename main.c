@@ -20,8 +20,6 @@
 #define BSIZE 1024
 
 #ifdef _DEVRAND_
-static unsigned int devrandom(const char *devname);
-static const char devname[]="/dev/urandom";
 #define SBID devrandom(devname)
 #define NBSEED devrandom(devname)
 #else
@@ -36,16 +34,20 @@ static void genSudokus_rnd_solve(FILE *fp,struct sgs_game *game,sgt_bid bid,unsi
 static int showErr (const char **str, int errno, const char *msg);
 static void showHelp (const char *str, const char **param,const char **hparam);
 static unsigned int basename (const char *ch);
+static unsigned int devrandom(const char *devname);
+
+
+static const char devname[]="/dev/urandom";
 
 const char playername[]="Hwoy";
 static const char *cptrarr_param[] =
-  { "-sbid:","-nblank:" ,"-nboard:","-sd:" ,"-nbseed:","-solve","-file:","-h", NULL };
+  { "-sbid:","-nblank:" ,"-nboard:","-sd:" ,"-nbseed:","-solve","-file:","-devrandom","-timerandom","-h", NULL };
 enum
 {
-  opt_sbid, opt_nblank, opt_nboard, opt_sd, opt_nbseed,opt_solve ,opt_file,opt_h
+  opt_sbid, opt_nblank, opt_nboard, opt_sd, opt_nbseed,opt_solve ,opt_file,opt_dev,opt_time,opt_h
 };
 static const char *helpparam[] =
-  { "start bid", "numbers of blank", "numbers of board", "SD", "nblank seed", "Solve games","Out put file", "Help",
+  { "start bid", "numbers of blank", "numbers of board", "SD", "nblank seed", "Solve games","Out put file", "dev random","time random","Help",
   NULL
 };
 static const char *err_str[] =
@@ -138,7 +140,17 @@ filename[0]=0;
 		 break;
 		 
 		 case opt_file:
-		strcpy(filename,carray_buff);
+		 strcpy(filename,carray_buff);
+		 break;
+		 
+		 case opt_dev:
+		 sbid=devrandom(devname);
+		 nbseed=devrandom(devname);
+		 break;
+		 
+		 case opt_time:
+		 sbid=time(NULL);
+		 nbseed=time(NULL);
 		 break;
 		 
 		 case opt_h:
@@ -213,16 +225,24 @@ static void showHelp (const char *str, const char **param, const char **hparam)
   fprintf (stderr, "\n");
 
   fprintf (stderr, "[DEFAULT]\n");
-  fprintf (stderr, "%10s=%s\n", param[0], "Random");
+  #ifdef _DEVRAND_
+	fprintf (stderr, "%10s=%s\n", param[0], "dev random");
+  #else
+	fprintf (stderr, "%10s=%s\n", param[0], "time random");
+  #endif
   fprintf (stderr, "%10s=%u\n", param[1], NBLANK);
   fprintf (stderr, "%10s=%u\n", param[2], NBOARD);
   fprintf (stderr, "%10s=%u\n", param[3], SD);
-  fprintf (stderr, "%10s=%s\n", param[4], "Random");
-  fprintf (stderr, "%10s=%s\n", param[6], "stdout");
+  #ifdef _DEVRAND_
+	fprintf (stderr, "%10s=%s\n", param[4], "dev random");
+  #else
+	fprintf (stderr, "%10s=%s\n", param[4], "time random");
+  #endif
+  fprintf (stderr, "%10s=%s\n", param[8], "stdout");
   fprintf (stderr, "\n");
 }
 
-#ifdef _DEVRAND_
+
 static unsigned int devrandom(const char *devname)
 {
 	unsigned int i,j,k;
@@ -236,4 +256,3 @@ static unsigned int devrandom(const char *devname)
 	fclose(fp);
 	return j;
 }
-#endif
