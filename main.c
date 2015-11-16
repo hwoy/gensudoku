@@ -200,7 +200,9 @@ static unsigned int basename (const char *ch)
 static void showHelp (const char *str, const char **param, const char **hparam)
 {
   unsigned int i;
-  fprintf (stderr, "\nUSAGE: %s [option list]\n\n", &str[basename (str)]);
+  
+  fprintf (stderr,"\n%s ENGINE VERSION = %u.%u.%u\n",&str[basename (str)],SUDOKU_ENGINE_MAJOR_VERSION,SUDOKU_ENGINE_MINOR_VERSION,SUDOKU_ENGINE_SMINOR_VERSION);
+  fprintf (stderr, "USAGE: %s [option list]\n\n", &str[basename (str)]);
 
   fprintf (stderr, "[OPTIONS]\n");
 

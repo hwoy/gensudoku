@@ -20,6 +20,10 @@ struct sgs_game *sgf_init(struct sgs_game *game,const char *playername,sgt_bid b
 	game->bid=bid;
 	game->numblank=numblank;
 	
+	game->majorver=SUDOKU_ENGINE_MAJOR_VERSION;
+	game->minorver=SUDOKU_ENGINE_MINOR_VERSION;
+	game->sminorver=SUDOKU_ENGINE_SMINOR_VERSION;
+	
 	return game;
 }
 void sgf_setvalue(sgt_set value,struct sgs_game *game,unsigned int x,unsigned int y)

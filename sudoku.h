@@ -3,6 +3,10 @@
 
 #define POW2A(x) (1<<(x))
 
+#define SUDOKU_ENGINE_MAJOR_VERSION 1
+#define SUDOKU_ENGINE_MINOR_VERSION 0
+#define SUDOKU_ENGINE_SMINOR_VERSION 0
+
 
 typedef unsigned short sgt_set;
 typedef unsigned int sgt_bid;
@@ -28,6 +32,10 @@ struct sgs_game
 	struct sgs_board board;
 	struct sgs_board sboard;
 	const char *playername;
+	
+	unsigned int majorver;
+	unsigned int minorver;
+	unsigned int sminorver;
 };
 
 struct sgs_game *sgf_init(struct sgs_game *game,const char *playername,sgt_bid bid,unsigned int numblank);

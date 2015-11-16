@@ -36,7 +36,7 @@ static void replacech(char *str,char ch,char rp)
 void printValuep(FILE *fp,struct sgs_game *game,char ch,char sch)
 {
 unsigned int i,j,k;
-fprintf(fp,"BID = %u, N_BLANK = %u\n\n",game->bid,game->numblank);
+fprintf(fp,"ENGINE VERSION = %u.%u.%u, BID = %u, N_BLANK = %u\n\n",game->majorver,game->minorver,game->sminorver,game->bid,game->numblank);
 
 
 for(i=0;i<S_SQR;i++)
@@ -61,7 +61,8 @@ for(i=0;i<S_SQR;i++)
 void printFindvalueUnique(FILE *fp,struct sgs_game *game,char ch)
 {
 unsigned int i,j,k;
-fprintf(fp,"BID = %u, N_BLANK = %u\n\n",game->bid,game->numblank);
+
+fprintf(fp,"ENGINE VERSION = %u.%u.%u, BID = %u, N_BLANK = %u\n\n",game->majorver,game->minorver,game->sminorver,game->bid,game->numblank);
 
 for(i=0;i<S_SQR;i++)
 {
@@ -83,7 +84,8 @@ for(i=0;i<S_SQR;i++)
 void printFindvalueOne(FILE *fp,struct sgs_game *game,char ch)
 {
 unsigned int i,j,k;
-fprintf(fp,"BID = %u, N_BLANK = %u\n\n",game->bid,game->numblank);
+
+fprintf(fp,"ENGINE VERSION = %u.%u.%u, BID = %u, N_BLANK = %u\n\n",game->majorver,game->minorver,game->sminorver,game->bid,game->numblank);
 
 for(i=0;i<S_SQR;i++)
 {
@@ -105,6 +107,7 @@ for(i=0;i<S_SQR;i++)
 void printBoard(FILE *fp,struct sgs_game *game,char ch,int shownblank)
 {
 unsigned int i,j,k;
+fprintf(fp,"ENGINE VERSION = %u.%u.%u, ",game->majorver,game->minorver,game->sminorver);
 if(shownblank)
 fprintf(fp,"BID = %u, N_BLANK = %u\n\n",game->bid,game->numblank);
 else fprintf(fp,"BID = %u\n\n",game->bid);
