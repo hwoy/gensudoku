@@ -73,13 +73,13 @@ struct sgs_game game;
 
 
 /********** init default variables **********/
+devname=dname;
 sbid=SBID;
 nblank=NBLANK;
 nboard=NBOARD;
 sd=SD;
 nbseed=NBSEED;
 fp=FP;
-devname=dname;
 genSudokusptr=genSudokus_rnd;
 /********** init default variables **********/
 
