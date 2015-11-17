@@ -195,13 +195,21 @@ return 0;
 
 static void genSudokus_rnd_solve(FILE *fp,struct sgs_game *game,sgt_bid bid,unsigned int num,char ch,unsigned int sd,unsigned int seed)
 {
-	unsigned int i;
+	unsigned int i,j;
+	j=sgf_getnblank(game);
 	for(i=0;i<num;i++)
-	{
-		genSudokus_rnd(fp,game,bid+i,1,ch,sd,seed+i);
-		sgf_srandom(bid+i);
-		genBoards(fp,game,bid+i,1,ch);
-	}
+{
+sgf_srandom(seed+i);
+sgf_setbid(game,bid+i);
+sgf_createsudoku_rnd(game,sd);
+fprintf(fp,"SN_BLANK_SEED = %u, SBID = %u, N_BLANK_SEED = %u, N = %u, SN_BLANK = %u, SD = %u\n",seed,bid,seed+i,num,j,sd);
+printBoard(fp,game,ch,1);
+sgf_setnblank(game,j);
+fputc('\n',fp);
+
+sgf_srandom(bid+i);
+genBoards(fp,game,bid+i,1,ch);
+}
 }
 
 static int showErr (const char **str, int errno, const char *msg)
