@@ -245,8 +245,8 @@ static void showHelp (const char *str, const char **param, const char **hparam)
   #else
 	fprintf (stderr, "%10s=%s\n", param[4], "time random");
   #endif
+  fprintf (stderr, "%10s=%s\n", param[6], "stdout");
   fprintf (stderr, "%10s=%s\n", param[8], dname);
-  fprintf (stderr, "%10s=%s\n", param[9], "stdout");
   fprintf (stderr, "\n");
 }
 
