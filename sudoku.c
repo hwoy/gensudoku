@@ -344,13 +344,7 @@ void sgf_createsudoku(struct sgs_game *game)
 		}			
 	
 	sgf_findboard(game);
-		for(y=0;y<S_SQR;y++)
-		{
-		for(x=0;x<S_SQR;x++)
-			{
-				game->sboard.unit[y][x].value=game->board.unit[y][x].value;
-			}
-		}
+
 	
 	for(j=S_SQR*S_SQR,i=0;i<game->numblank;i++)
 	{

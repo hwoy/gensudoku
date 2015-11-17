@@ -1,11 +1,11 @@
-#define S_SQR 9
 #define S_ZSQR 3
+#define S_SQR (S_ZSQR*S_ZSQR)
 
 #define POW2A(x) (1<<(x))
 
 #define SUDOKU_ENGINE_MAJOR_VERSION 1
 #define SUDOKU_ENGINE_MINOR_VERSION 0
-#define SUDOKU_ENGINE_SMINOR_VERSION 0
+#define SUDOKU_ENGINE_SMINOR_VERSION 1
 
 
 typedef unsigned short sgt_set;
@@ -30,7 +30,6 @@ struct sgs_game
 	sgt_bid bid;
 	unsigned int numblank;
 	struct sgs_board board;
-	struct sgs_board sboard;
 	const char *playername;
 	
 	unsigned int majorver;
