@@ -39,7 +39,7 @@ static unsigned int devrandom(const char *devname);
 static char dname[]="/dev/urandom";
 static char *devname;
 
-const char playername[]="Hwoy";
+static const char playername[]="Hwoy";
 static const char *cptrarr_param[] =
   { "-sbid:","-nblank:" ,"-nboard:", "-sd:" ,"-nbseed:","-solve",  "-file:","-devrandom","-devpath:","-timerandom","-h", NULL };
 enum
