@@ -47,7 +47,7 @@ enum
   opt_sbid,  opt_nblank, opt_nboard, opt_sd, opt_nbseed,opt_solve ,opt_file,opt_dev,      opt_devpath,  opt_time,    opt_h
 };
 static const char *helpparam[] =
-  { "start bid", "numbers of blank", "numbers of board", "SD", "nblank seed", "Solve games","Out put file", "dev random", "dev random path","time random","Help",
+  { "start bid", "numbers of blank", "numbers of board", "SD", "nblank seed", "Solve games","Out put file", "dev random", "dev random with path","time random","Help",
   NULL
 };
 static const char *err_str[] =
@@ -145,14 +145,12 @@ filename[0]=0;
 		 strcpy(filename,carray_buff);
 		 break;
 		 
-		 case opt_dev:
-		 sbid=devrandom(devname);
-		 nbseed=devrandom(devname);
-		 break;
 		 
 		 case opt_devpath:
 		 strcpy(devfilename,carray_buff);
 		 devname=devfilename;
+		 
+		 case opt_dev:
 		 sbid=devrandom(devname);
 		 nbseed=devrandom(devname);
 		 break;
