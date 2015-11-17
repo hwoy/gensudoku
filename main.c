@@ -36,8 +36,8 @@ static void showHelp (const char *str, const char **param,const char **hparam);
 static unsigned int basename (const char *ch);
 static unsigned int devrandom(const char *devname);
 
-static char dname[]="/dev/urandom";
-static char *devname;
+static const char dname[]="/dev/urandom";
+static const char *devname;
 
 static const char playername[]="Hwoy";
 static const char *cptrarr_param[] =
@@ -220,7 +220,7 @@ static void showHelp (const char *str, const char **param, const char **hparam)
 {
   unsigned int i;
   
-  fprintf (stderr,"\n%s ENGINE VERSION = %u.%u.%u\n",&str[basename (str)],SUDOKU_ENGINE_MAJOR_VERSION,SUDOKU_ENGINE_MINOR_VERSION,SUDOKU_ENGINE_SMINOR_VERSION);
+  fprintf (stderr,"\n%s [ENGINE VERSION = %u.%u.%u]\n",&str[basename (str)],SUDOKU_ENGINE_MAJOR_VERSION,SUDOKU_ENGINE_MINOR_VERSION,SUDOKU_ENGINE_SMINOR_VERSION);
   fprintf (stderr, "USAGE: %s [option list]\n\n", &str[basename (str)]);
 
   fprintf (stderr, "[OPTIONS]\n");
