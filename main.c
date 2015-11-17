@@ -137,6 +137,12 @@ filename[0]=0;
 			}
 		 break;
 		 
+		 case opt_nbseed:
+			if (!isUint (carray_buff))
+			return showErr (err_str, err_ni, carray_buff);
+			nbseed=s2ui (carray_buff);
+		 break;		 
+		 
 		 case opt_solve:
 		 genSudokusptr=genSudokus_rnd_solve;
 		 break;
@@ -192,7 +198,8 @@ static void genSudokus_rnd_solve(FILE *fp,struct sgs_game *game,sgt_bid bid,unsi
 	unsigned int i;
 	for(i=0;i<num;i++)
 	{
-		genSudokus_rnd(fp,game,bid+i,1,ch,sd,seed);
+		genSudokus_rnd(fp,game,bid+i,1,ch,sd,seed+i);
+		sgf_srandom(bid+i);
 		genBoards(fp,game,bid+i,1,ch);
 	}
 }

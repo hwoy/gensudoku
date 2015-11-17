@@ -5,7 +5,7 @@
 
 
 static void replacech(char *str,char ch,char rp);
-
+static void showgamedetail(FILE *fp,struct sgs_game *game);
 
 char sio_getch(char *buff,int size,char dkey)
 {
@@ -33,11 +33,17 @@ static void replacech(char *str,char ch,char rp)
 	}
 }
 
+static void showgamedetail(FILE *fp,struct sgs_game *game)
+{
+	fprintf(fp,"ENGINE = v.%u.%u.%u, GAME = %u.%u, BID = %u, N_BLANK = %u\n\n",game->majorver,game->minorver,game->sminorver,game->bid,game->numblank,game->bid,game->numblank);
+}
+
 void printValuep(FILE *fp,struct sgs_game *game,char ch,char sch)
 {
 unsigned int i,j,k;
-fprintf(fp,"ENGINE VERSION = %u.%u.%u, BID = %u, N_BLANK = %u\n\n",game->majorver,game->minorver,game->sminorver,game->bid,game->numblank);
 
+
+showgamedetail(fp,game);
 
 for(i=0;i<S_SQR;i++)
 {
@@ -62,7 +68,7 @@ void printFindvalueUnique(FILE *fp,struct sgs_game *game,char ch)
 {
 unsigned int i,j,k;
 
-fprintf(fp,"ENGINE VERSION = %u.%u.%u, BID = %u, N_BLANK = %u\n\n",game->majorver,game->minorver,game->sminorver,game->bid,game->numblank);
+showgamedetail(fp,game);
 
 for(i=0;i<S_SQR;i++)
 {
@@ -85,7 +91,7 @@ void printFindvalueOne(FILE *fp,struct sgs_game *game,char ch)
 {
 unsigned int i,j,k;
 
-fprintf(fp,"ENGINE VERSION = %u.%u.%u, BID = %u, N_BLANK = %u\n\n",game->majorver,game->minorver,game->sminorver,game->bid,game->numblank);
+showgamedetail(fp,game);
 
 for(i=0;i<S_SQR;i++)
 {
@@ -107,9 +113,8 @@ for(i=0;i<S_SQR;i++)
 void printBoard(FILE *fp,struct sgs_game *game,char ch,int shownblank)
 {
 unsigned int i,j,k;
-fprintf(fp,"ENGINE VERSION = %u.%u.%u, ",game->majorver,game->minorver,game->sminorver);
 if(shownblank)
-fprintf(fp,"BID = %u, N_BLANK = %u\n\n",game->bid,game->numblank);
+showgamedetail(fp,game);
 else fprintf(fp,"BID = %u\n\n",game->bid);
 
 for(i=0;i<S_SQR;i++)
@@ -159,13 +164,13 @@ fputc('\n',fp);
 void genSudokus_rnd(FILE *fp,struct sgs_game *game,sgt_bid bid,unsigned int num,char ch,unsigned int sd,unsigned int seed)
 {
 	unsigned int i,j;
-	sgf_srandom(seed);
 	j=sgf_getnblank(game);
 	for(i=0;i<num;i++)
 {
-sgf_setbid(game,i+bid);
+sgf_srandom(seed+i);
+sgf_setbid(game,bid+i);
 sgf_createsudoku_rnd(game,sd);
-fprintf(fp,"N_BLANK_SEED = %u, S_BID = %u, N = %u, BN_BLANK = %u, SD = %u\n",seed,bid,num,j,sd);
+fprintf(fp,"SN_BLANK_SEED = %u, S_BID = %u, N_BLANK_SEED = %u, N = %u, BN_BLANK = %u, SD = %u\n",seed,bid,seed+i,num,j,sd);
 printBoard(fp,game,ch,1);
 sgf_setnblank(game,j);
 fputc('\n',fp);
