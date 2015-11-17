@@ -36,18 +36,18 @@ static void showHelp (const char *str, const char **param,const char **hparam);
 static unsigned int basename (const char *ch);
 static unsigned int devrandom(const char *devname);
 
-
-static const char devname[]="/dev/urandom";
+static char dname[]="/dev/urandom";
+static char *devname;
 
 const char playername[]="Hwoy";
 static const char *cptrarr_param[] =
-  { "-sbid:","-nblank:" ,"-nboard:","-sd:" ,"-nbseed:","-solve","-file:","-devrandom","-timerandom","-h", NULL };
+  { "-sbid:","-nblank:" ,"-nboard:", "-sd:" ,"-nbseed:","-solve",  "-file:","-devrandom","-devpath:","-timerandom","-h", NULL };
 enum
 {
-  opt_sbid, opt_nblank, opt_nboard, opt_sd, opt_nbseed,opt_solve ,opt_file,opt_dev,opt_time,opt_h
+  opt_sbid,  opt_nblank, opt_nboard, opt_sd, opt_nbseed,opt_solve ,opt_file,opt_dev,      opt_devpath,  opt_time,    opt_h
 };
 static const char *helpparam[] =
-  { "start bid", "numbers of blank", "numbers of board", "SD", "nblank seed", "Solve games","Out put file", "dev random","time random","Help",
+  { "start bid", "numbers of blank", "numbers of board", "SD", "nblank seed", "Solve games","Out put file", "dev random", "dev random path","time random","Help",
   NULL
 };
 static const char *err_str[] =
@@ -60,7 +60,7 @@ enum
 
 int main(int argc,const char **argv)
 {
-  static char carray_buff[BSIZE], filename[BSIZE];
+  static char carray_buff[BSIZE], filename[BSIZE],devfilename[BSIZE];
   int i,j;
   unsigned int ui_cindex;
   
@@ -79,6 +79,7 @@ nboard=NBOARD;
 sd=SD;
 nbseed=NBSEED;
 fp=FP;
+devname=dname;
 genSudokusptr=genSudokus_rnd;
 /********** init default variables **********/
 
@@ -86,6 +87,7 @@ filename[0]=0;
 
   for (ui_cindex = DSTART; (i =opt_action (argc, argv, cptrarr_param, carray_buff,BSIZE, DSTART)) != e_optend; ui_cindex++)
   {
+
 	 switch(i)
 	 
 	 {
@@ -144,6 +146,13 @@ filename[0]=0;
 		 break;
 		 
 		 case opt_dev:
+		 sbid=devrandom(devname);
+		 nbseed=devrandom(devname);
+		 break;
+		 
+		 case opt_devpath:
+		 strcpy(devfilename,carray_buff);
+		 devname=devfilename;
 		 sbid=devrandom(devname);
 		 nbseed=devrandom(devname);
 		 break;
@@ -238,7 +247,8 @@ static void showHelp (const char *str, const char **param, const char **hparam)
   #else
 	fprintf (stderr, "%10s=%s\n", param[4], "time random");
   #endif
-  fprintf (stderr, "%10s=%s\n", param[8], "stdout");
+  fprintf (stderr, "%10s=%s\n", param[8], dname);
+  fprintf (stderr, "%10s=%s\n", param[9], "stdout");
   fprintf (stderr, "\n");
 }
 
