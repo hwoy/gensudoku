@@ -99,7 +99,7 @@ void sgf_srandom (int seed)
   srand (seed);
 }
 
-int sgf_random (int min, int max)
+unsigned int sgf_random (unsigned int min,unsigned int max)
 {
   return min <= max ? min + (rand () % (max - min + 1)) : -1;
 }

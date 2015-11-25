@@ -52,7 +52,7 @@ unsigned int sgf_countvalue_set(sgt_set value);
 unsigned int sgf_countvalue(struct sgs_game *game,unsigned int x,unsigned int y);
 
 void sgf_srandom (int seed);
-int sgf_random (int min, int max);
+unsigned int sgf_random (unsigned int min,unsigned int max);
 
 unsigned int sgf_log2a (unsigned int num);
 unsigned int sgf_findvalueone(struct sgs_game *game,unsigned int x,unsigned int y);
