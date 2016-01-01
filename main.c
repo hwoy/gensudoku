@@ -31,7 +31,7 @@
 /****************** Constances ********************/
 
 static void genSudokus_rnd_solve(FILE *fp,struct sgs_game *game,sgt_bid bid,unsigned int num,char ch,unsigned int sd,unsigned int seed);
-static int showErr (const char **str, int errno, const char *msg);
+static int showErr (const char **str, int _errno, const char *msg);
 static void showHelp (const char *str, const char **param,const char **hparam);
 static unsigned int basename (const char *ch);
 static unsigned int devrandom(const char *devname);
@@ -212,10 +212,10 @@ genBoards(fp,game,bid+i,1,ch);
 }
 }
 
-static int showErr (const char **str, int errno, const char *msg)
+static int showErr (const char **str, int _errno, const char *msg)
 {
-  fprintf (stderr, "ERR %d: %s : %s\n", errno, msg, str[errno]);
-  return -1 * (errno + 1);
+  fprintf (stderr, "ERR %d: %s : %s\n", _errno, msg, str[_errno]);
+  return -1 * (_errno + 1);
 }
 
 static unsigned int basename (const char *ch)
