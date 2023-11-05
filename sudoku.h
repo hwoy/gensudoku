@@ -1,3 +1,6 @@
+#ifndef __SUDOKU_H__
+#define __SUDOKU_H__
+
 #define S_ZSQR 3
 #define S_SQR (S_ZSQR * S_ZSQR)
 
@@ -65,3 +68,6 @@ void sgf_createsudoku_rnd(struct sgs_game* game, unsigned int sd); /*No sgf_sran
 
 void sgf_setnblank(struct sgs_game* game, unsigned int numblank);
 unsigned int sgf_getnblank(struct sgs_game* game);
+
+
+#endif

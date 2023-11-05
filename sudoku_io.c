@@ -1,5 +1,4 @@
 #include "sudoku_io.h"
-#include "sudoku.h"
 #include <stdio.h>
 #include <string.h>
 
