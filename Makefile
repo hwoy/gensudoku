@@ -1,5 +1,5 @@
 bin=gensudoku
-CFLAGS=-O2 -std=c89 -pedantic -Wall -Werror # -D_DEVRAND_ #for better random in unix enviroment
+CFLAGS=-O2 -std=c89 -pedantic -Wall #-Werror # -D_DEVRAND_ #for better random in unix enviroment
 
 .PHONY: all clean
 
