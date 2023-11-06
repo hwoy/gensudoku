@@ -1,6 +1,6 @@
-# gensudoku
+# Gensudoku
 
-gensudoku is just a sudoku boards generator.
+Gensudoku is just a sudoku boards generator.
 
 To help you create sudoku board easily.
 
