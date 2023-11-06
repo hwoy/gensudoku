@@ -162,8 +162,7 @@ int main(int argc, const char** argv)
             break;
 
         case opt_time:
-            sbid = time(NULL);
-            nbseed = time(NULL);
+            nbseed = sbid = time(NULL);
             break;
 
         case opt_h:
