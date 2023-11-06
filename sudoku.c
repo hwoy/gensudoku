@@ -29,12 +29,12 @@ void sgf_setvalue(sgt_set value, struct sgs_game* game, unsigned int x, unsigned
     game->board.unit[y][x].value = value;
 }
 
-sgt_set sgf_getvalue(struct sgs_game* game, unsigned int x, unsigned int y)
+sgt_set sgf_getvalue(const struct sgs_game* game, unsigned int x, unsigned int y)
 {
     return game->board.unit[y][x].value;
 }
 
-sgt_set sgf_getvalue_x(struct sgs_game* game, unsigned int y)
+sgt_set sgf_getvalue_x(const struct sgs_game* game, unsigned int y)
 {
     unsigned int i;
     sgt_set set;
@@ -44,7 +44,7 @@ sgt_set sgf_getvalue_x(struct sgs_game* game, unsigned int y)
     return (set) & (POW2A(S_SQR) - 1);
 }
 
-sgt_set sgf_getvalue_y(struct sgs_game* game, unsigned int x)
+sgt_set sgf_getvalue_y(const struct sgs_game* game, unsigned int x)
 {
     unsigned int i;
     sgt_set set;
@@ -54,7 +54,7 @@ sgt_set sgf_getvalue_y(struct sgs_game* game, unsigned int x)
     return (set) & (POW2A(S_SQR) - 1);
 }
 
-sgt_set sgf_getvalue_z(struct sgs_game* game, unsigned int x, unsigned int y)
+sgt_set sgf_getvalue_z(const struct sgs_game* game, unsigned int x, unsigned int y)
 {
     unsigned int i, j, m, n;
     sgt_set set;
@@ -81,7 +81,7 @@ unsigned int sgf_countvalue_set(sgt_set value)
     }
     return j;
 }
-unsigned int sgf_countvalue(struct sgs_game* game, unsigned int x, unsigned int y)
+unsigned int sgf_countvalue(const struct sgs_game* game, unsigned int x, unsigned int y)
 {
 
     return sgf_countvalue_set(game->board.unit[y][x].value);
@@ -258,7 +258,7 @@ int sgf_genboard(struct sgs_game* game)
     return sgf_completeboard(game);
 }
 
-int sgf_completeboard(struct sgs_game* game)
+int sgf_completeboard(const struct sgs_game* game)
 {
     unsigned int x, y, j;
 
@@ -297,7 +297,7 @@ void sgf_setbid(struct sgs_game* game, sgt_bid bid)
     game->bid = bid;
 }
 
-sgt_bid sgf_getbid(struct sgs_game* game)
+sgt_bid sgf_getbid(const struct sgs_game* game)
 {
     return game->bid;
 }
@@ -333,7 +333,7 @@ void sgf_setnblank(struct sgs_game* game, unsigned int numblank)
 {
     game->numblank = numblank;
 }
-unsigned int sgf_getnblank(struct sgs_game* game)
+unsigned int sgf_getnblank(const struct sgs_game* game)
 {
     return game->numblank;
 }

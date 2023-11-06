@@ -1,9 +1,8 @@
 #include "sudoku_io.h"
-#include <stdio.h>
 #include <string.h>
 
 static void replacech(char* str, char ch, char rp);
-static void showgamedetail(FILE* fp, struct sgs_game* game);
+static void showgamedetail(FILE* fp, const struct sgs_game* game);
 
 char sio_getch(char* buff, int size, char dkey)
 {
@@ -27,7 +26,7 @@ static void replacech(char* str, char ch, char rp)
     }
 }
 
-static void showgamedetail(FILE* fp, struct sgs_game* game)
+static void showgamedetail(FILE* fp, const struct sgs_game* game)
 {
     fprintf(fp, "ENGINE = v.%u.%u.%u, GAME = %u.%u, BID = %u, N_BLANK = %u\n\n", game->majorver, game->minorver, game->sminorver, game->bid, game->numblank, game->bid, game->numblank);
 }
