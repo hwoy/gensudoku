@@ -32,14 +32,13 @@ struct sgs_game {
     sgt_bid bid;
     unsigned int numblank;
     struct sgs_board board;
-    const char* playername;
 
     unsigned int majorver;
     unsigned int minorver;
     unsigned int sminorver;
 };
 
-struct sgs_game* sgf_init(struct sgs_game* game, const char* playername, sgt_bid bid, unsigned int numblank);
+struct sgs_game* sgf_init(struct sgs_game* game, sgt_bid bid, unsigned int numblank);
 void sgf_setvalue(sgt_set value, struct sgs_game* game, unsigned int x, unsigned int y);
 sgt_set sgf_getvalue(const struct sgs_game* game, unsigned int x, unsigned int y);
 void sgf_setbid(struct sgs_game* game, unsigned int bid);

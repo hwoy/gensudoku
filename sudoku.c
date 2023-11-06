@@ -1,7 +1,7 @@
 #include "sudoku.h"
 #include <stdlib.h>
 
-struct sgs_game* sgf_init(struct sgs_game* game, const char* playername, sgt_bid bid, unsigned int numblank)
+struct sgs_game* sgf_init(struct sgs_game* game, sgt_bid bid, unsigned int numblank)
 {
     unsigned int x, y;
 
@@ -14,7 +14,6 @@ struct sgs_game* sgf_init(struct sgs_game* game, const char* playername, sgt_bid
         }
     }
 
-    game->playername = playername;
     game->bid = bid;
     game->numblank = numblank;
 

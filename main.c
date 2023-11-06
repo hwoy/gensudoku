@@ -39,7 +39,6 @@ static unsigned int devrandom(const char* devname);
 static const char dname[] = "/dev/urandom";
 static const char* devname;
 
-static const char playername[] = "Hwoy";
 static const char* cptrarr_param[] = { "-sbid:", "-nblank:", "-nboard:", "-sd:", "-nbseed:", "-solve", "-file:", "-devrandom", "-devpath:", "-timerandom", "-h", NULL };
 enum {
     opt_sbid,
@@ -181,7 +180,7 @@ int main(int argc, const char** argv)
         }
     }
 
-    sgf_init(&game, playername, sbid, nblank);
+    sgf_init(&game, sbid, nblank);
 
     genSudokusptr(fp, &game, sbid, nboard, CH, sd, nbseed);
 
