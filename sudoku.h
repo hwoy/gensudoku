@@ -10,6 +10,8 @@
 #define SUDOKU_ENGINE_MINOR_VERSION 0
 #define SUDOKU_ENGINE_SMINOR_VERSION 1
 
+#include "glibcrng.h"
+
 typedef unsigned short sgt_set;
 typedef unsigned int sgt_bid;
 struct sgs_unit {
@@ -26,6 +28,7 @@ struct sgs_board {
 };
 
 struct sgs_game {
+    GLIBCRNG rng;
     sgt_bid bid;
     unsigned int numblank;
     struct sgs_board board;
@@ -49,8 +52,9 @@ sgt_set sgf_getvalue_p(struct sgs_game* game, unsigned int x, unsigned int y);
 unsigned int sgf_countvalue_set(sgt_set value);
 unsigned int sgf_countvalue(const struct sgs_game* game, unsigned int x, unsigned int y);
 
-void sgf_srandom(int seed);
-unsigned int sgf_random(unsigned int min, unsigned int max);
+void sgf_seed(struct sgs_game* game, URND32 seed);
+unsigned int sgf_rand(struct sgs_game* game);
+unsigned int sgf_random(struct sgs_game* game, unsigned int min, unsigned int max);
 
 unsigned int sgf_log2a(unsigned int num);
 unsigned int sgf_findvalueone(struct sgs_game* game, unsigned int x, unsigned int y);
@@ -67,6 +71,5 @@ void sgf_createsudoku_rnd(struct sgs_game* game, unsigned int sd); /*No sgf_sran
 
 void sgf_setnblank(struct sgs_game* game, unsigned int numblank);
 unsigned int sgf_getnblank(const struct sgs_game* game);
-
 
 #endif

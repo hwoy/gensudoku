@@ -162,7 +162,7 @@ void genSudokus_rnd(FILE* fp, struct sgs_game* game, sgt_bid bid, unsigned int n
     unsigned int i, j;
     j = sgf_getnblank(game);
     for (i = 0; i < num; i++) {
-        sgf_srandom(seed + i);
+        sgf_seed(game, seed + i);
         sgf_setbid(game, bid + i);
         sgf_createsudoku_rnd(game, sd);
         fprintf(fp, "SN_BLANK_SEED = %u, SBID = %u, N_BLANK_SEED = %u, N = %u, SN_BLANK = %u, SD = %u\n", seed, bid, seed + i, num, j, sd);

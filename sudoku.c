@@ -87,14 +87,19 @@ unsigned int sgf_countvalue(const struct sgs_game* game, unsigned int x, unsigne
     return sgf_countvalue_set(game->board.unit[y][x].value);
 }
 
-void sgf_srandom(int seed)
+void sgf_seed(struct sgs_game* game, URND32 seed)
 {
-    srand(seed);
+    glibcrnginit(game->rng, seed);
 }
 
-unsigned int sgf_random(unsigned int min, unsigned int max)
+unsigned int sgf_rand(struct sgs_game* game)
 {
-    return min <= max ? min + (rand() % (max - min + 1)) : -1;
+    return glibcrng(game->rng);
+}
+
+unsigned int sgf_random(struct sgs_game* game, unsigned int min, unsigned int max)
+{
+    return min <= max ? min + (sgf_rand(game) % (max - min + 1)) : -1;
 }
 
 unsigned int sgf_log2a(unsigned int num)
@@ -185,7 +190,7 @@ int sgf_genboard(struct sgs_game* game)
                         tmp[m++] = j + 1;
                 }
 
-                sgf_setvalue(tmp[sgf_random(0, m - 1)], game, x, y);
+                sgf_setvalue(tmp[sgf_random(game, 0, m - 1)], game, x, y);
             }
         }
     }
@@ -207,7 +212,7 @@ int sgf_genboard(struct sgs_game* game)
             }
 
             do {
-                sgf_setvalue((k = tmp[sgf_random(0, m - 1)]), game, x, y);
+                sgf_setvalue((k = tmp[sgf_random(game, 0, m - 1)]), game, x, y);
                 for (; k < m - 1; k++) {
                     tmp[k] = tmp[k + 1];
                 }
@@ -247,7 +252,7 @@ int sgf_genboard(struct sgs_game* game)
             }
 
             do {
-                sgf_setvalue((k = tmp[sgf_random(0, m - 1)]), game, x, y);
+                sgf_setvalue((k = tmp[sgf_random(game, 0, m - 1)]), game, x, y);
                 for (; k < m - 1; k++) {
                     tmp[k] = tmp[k + 1];
                 }
@@ -285,7 +290,7 @@ void sgf_resetboard(struct sgs_game* game)
 
 sgt_bid sgf_findboard(struct sgs_game* game)
 {
-    sgf_srandom(game->bid);
+    sgf_seed(game, game->bid);
     while (sgf_genboard(game))
         ;
 
@@ -315,7 +320,7 @@ void sgf_createsudoku(struct sgs_game* game)
     sgf_findboard(game);
 
     for (j = S_SQR * S_SQR, i = 0; i < game->numblank; i++) {
-        k = tmp[m = sgf_random(0, --j)];
+        k = tmp[m = sgf_random(game, 0, --j)];
         sgf_setvalue(0, game, k % S_SQR, k / S_SQR);
         for (; m < j; m++) {
             tmp[m] = tmp[m + 1];
@@ -325,7 +330,7 @@ void sgf_createsudoku(struct sgs_game* game)
 
 void sgf_createsudoku_rnd(struct sgs_game* game, unsigned int sd)
 {
-    sgf_setnblank(game, sgf_random(sgf_getnblank(game) - sd, sgf_getnblank(game) + sd));
+    sgf_setnblank(game, sgf_random(game, sgf_getnblank(game) - sd, sgf_getnblank(game) + sd));
     sgf_createsudoku(game);
 }
 

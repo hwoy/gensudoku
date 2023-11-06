@@ -1,8 +1,8 @@
 #ifndef __SUDOKU_IO_H__
 #define __SUDOKU_IO_H__
 
-#include <stdio.h>
 #include "sudoku.h"
+#include <stdio.h>
 
 char sio_getch(char* buff, int size, char dkey);
 void printValuep(FILE* fp, struct sgs_game* game, char ch, char sch);
