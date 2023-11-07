@@ -10,7 +10,7 @@ struct sgs_game* sgf_init(struct sgs_game* game, sgt_bid bid, unsigned int numbl
             game->board.unit[y][x].idy = y;
             game->board.unit[y][x].idx = x;
             game->board.unit[y][x].idz = (x % S_ZSQR) + (y % S_ZSQR) * S_ZSQR;
-            game->board.unit[y][x].value = game->board.unit[y][x].valuep = 0;
+            game->board.unit[y][x].value = 0;
         }
     }
 
@@ -66,9 +66,9 @@ sgt_set sgf_getvalue_z(const struct sgs_game* game, unsigned int x, unsigned int
     return (set) & (POW2A(S_SQR) - 1);
 }
 
-sgt_set sgf_getvalue_p(struct sgs_game* game, unsigned int x, unsigned int y)
+sgt_set sgf_getvalue_p(const struct sgs_game* game, unsigned int x, unsigned int y)
 {
-    return (~(game->board.unit[y][x].valuep = sgf_getvalue_x(game, y) | sgf_getvalue_y(game, x) | sgf_getvalue_z(game, x, y))) & (POW2A(S_SQR) - 1);
+    return (~(sgf_getvalue_x(game, y) | sgf_getvalue_y(game, x) | sgf_getvalue_z(game, x, y))) & (POW2A(S_SQR) - 1);
 }
 
 unsigned int sgf_countvalue_set(sgt_set value)
@@ -109,7 +109,7 @@ unsigned int sgf_log2a(unsigned int num)
     return i;
 }
 
-unsigned int sgf_findvalueone(struct sgs_game* game, unsigned int x, unsigned int y)
+unsigned int sgf_findvalueone(const struct sgs_game* game, unsigned int x, unsigned int y)
 {
     unsigned int i;
     if ((sgf_countvalue_set(i = sgf_getvalue_p(game, x, y)) == 1) && !sgf_getvalue(game, x, y))
@@ -118,7 +118,7 @@ unsigned int sgf_findvalueone(struct sgs_game* game, unsigned int x, unsigned in
     return 0;
 }
 
-unsigned int sgf_findvalueunique(struct sgs_game* game, unsigned int x, unsigned int y)
+unsigned int sgf_findvalueunique(const struct sgs_game* game, unsigned int x, unsigned int y)
 {
     unsigned int i, j, m, n;
     sgt_set set;
@@ -150,7 +150,7 @@ unsigned int sgf_findvalueunique(struct sgs_game* game, unsigned int x, unsigned
     return 0;
 }
 
-unsigned int sgf_getobstruct(struct sgs_game* game)
+unsigned int sgf_getobstruct(const struct sgs_game* game)
 {
     unsigned int i, j, k;
 
