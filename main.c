@@ -10,7 +10,7 @@
 #define CH 0x20
 #define SCH '*'
 
-#define NBLANK 40
+#define NBLANK 45
 #define NBOARD 1
 #define SD 5
 #define FP stdout
