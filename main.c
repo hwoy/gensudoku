@@ -10,9 +10,9 @@
 #define CH 0x20
 #define SCH '*'
 
-#define NBLANK ((S_SQR*S_SQR)/2)
+#define NBLANK ((S_SQR * S_SQR * 60) / 100)
 #define NBOARD 1
-#define SD 5
+#define SD ((S_SQR * S_SQR * 5) / 100)
 #define FP stdout
 
 #define MAX_NBLANK (S_SQR * S_SQR)
